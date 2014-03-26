@@ -1,0 +1,17 @@
+{
+  "name": "reader",
+  "version": "0.0.1",
+  "homepage": "https://github.com/anoopchaurasia/reader",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anoopchaurasia/reader"
+  },
+  "author": {
+    "name": "anoop",
+    "email": "anoop26667@gmail.com"
+  },
+  "main": "start.js",
+  "dependencies": {
+    "jsfm-starter": "~1.0.8"
+  }
+}
