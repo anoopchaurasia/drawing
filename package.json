@@ -12,6 +12,6 @@
   },
   "main": "start.js",
   "dependencies": {
-    "jsfm-starter": "~1.0.8"
+    "jsfm-starter": "git://github.com/anoopchaurasia/starter.git"
   }
 }

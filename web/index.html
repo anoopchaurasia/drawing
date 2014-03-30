@@ -16,42 +16,57 @@
 			margin: 0;
 			color: inherit;
 		}
+		#header{
+			height: 200px;
+		}
 	</style>
     <script type="text/javascript" src="/js/jquery.js"></script>
 	<script src="js/jquery-ui-1.9.2.custom.min.js" ></script>
+	<script type="text/javascript" src="/js/parser.js"></script>
     <script type="text/javascript" src="jsfm.js"></script>
     <script>
 		fm.packages.drawing = "/js/src/classes";
 		fm.packages.common = "/js/src/classes";
 		fm.Import("common.Utility");
-		fm.Include("drawing.Canvas",function(){
-			var canvas;
+		fm.Include("drawing.controller.MainControlller",function(){
 			$(document).ready(function(){
-				canvas = new drawing.Canvas(jQuery("#image"), {fileTagging:{}}, "#ff0000" );
+				new drawing.controller.MainControlller(jQuery("#image"), {fileTagging:{}}, "#ff0000" );
 		   });
-		   var tools = canvas.getToolList();
-		   var shapes = canvas.getShapeList();
-		   for(var t in tools){
-				(function(tool, t){
-					$("<span>" +t+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>").appendTo("#tools").click(function(){
-					    canvas.setTool(t);
-					});
-				})(tools[t], t);
-		   }
-		   for(var t in shapes){
-				(function(shape, t){
-					$("<span>" +t+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>").appendTo("#shapes").click(function(){
-					    canvas.setShape(t);
-					});
-				})(shapes[t], t);
-		   }
 		});
 	</script>
         
 </head>
-<body> 
-<img id="image" src="/img/tooth_chart.png" />
-<div id="tools"></div>
-<div id="shapes"></div>
+<body>
+	<div id="header" fm-controller="drawing.controller.MainControlller">
+		<div
+			style="width: 100px; float: left;">
+			<div
+				fm-repeat="data in canvas.getToolList()" >
+				<span 
+					fm-click="canvas.setTool(data)" 
+					fm-bind="data">
+				</span>
+			</div>
+		</div>
+		<div
+			style="width: 100px; float: left;">
+			<div 
+				fm-repeat="data in canvas.getShapeList()" >
+				<span 
+					fm-click="canvas.setShape(data)" 
+					fm-bind="data">
+				</span>
+			</div>
+		</div>
+	</div>
+	<img 
+		id="image" 
+		src="/img/tooth_chart.png" />
+	<div
+		id="tools">
+	</div>
+	<div 
+		id="shapes">
+	</div>
 </body>
 </html>
