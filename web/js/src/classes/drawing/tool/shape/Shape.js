@@ -88,7 +88,13 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
                 color: layer.context.strokeStyle,
                 width: Math.abs(x - start.x),
                 height: Math.abs(y - start.y)
-            }
+            },
+            keydown: function (e) {
+                if(!e.ctrlKey && !e.altKey && !e.shiftKey && e.which === 46){
+                    me.getSub().destroy();
+                }
+            },
+            tabindex: 1234
         }).appendTo(layer.canvas.parent());
     }
 
@@ -151,27 +157,35 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
                 isDragging = false;
             }
         });
+        element.focus();
         var lastChangeX, lastChangeY;
 
     };
 
-    function destroyLayer() {
+    function destroyLayer(donotdraw) {
         element.remove();
         element = null;
         if (!me.currentEndPoint) {
             return;
         }
-        masterLayer.context.beginPath();
-        me.drawShape(me.currentEndPoint.x, me.currentEndPoint.y, masterLayer);
-        if (me.fillShape) {
-            masterLayer.context.fill();
+        if(!donotdraw){
+            masterLayer.context.beginPath();
+            me.drawShape(me.currentEndPoint.x, me.currentEndPoint.y, masterLayer);
+            if (me.fillShape) {
+                masterLayer.context.fill();
+            }
+            masterLayer.context.stroke();
+            masterLayer.context.closePath();
         }
         me.currentEndPoint = null;
-        masterLayer.context.stroke();
-        masterLayer.context.closePath();
         me.base.end();
         layer.hide();
     };
+
+
+    this.destroy = function(){
+        destroyLayer(true);
+    }
 
     /**
      * @override
