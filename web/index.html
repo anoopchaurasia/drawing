@@ -19,6 +19,70 @@
 		#header{
 			height: 200px;
 		}
+
+		.pencil{
+			background: url(/img/tools.png);
+			background-position: -6px -14px;
+		}
+
+		.filler{
+			background: url(/img/tools.png);
+			background-position: -28px -14px;
+		}
+
+		.eraser{
+			background: url(/img/tools.png);
+			background-position: -7px -42px;
+		}
+
+		.text_input{
+			background: url(/img/tools.png);
+			background-position: -53px -14px;
+		}
+
+		.line{
+			background: url(/img/shapes.png);
+			background-position: -2px -3px;
+		}
+
+		.rect{
+			background: url(/img/shapes.png);
+			background-position: -61px -3px;
+		}
+
+		.circle{
+			background: url(/img/shapes.png);
+			background-position: -42px -3px;
+		}
+
+		.arrow_line{
+			background: url(/img/shapes.png);
+			background-position: 62px -23px;
+		}
+		
+		.rotate{
+			background: url(/img/shapes.png);
+			background-position: 62px -23px;
+		}
+	
+		#header {
+			height: 86px;
+			border: 1px solid #ccc;
+			border-radius: 2px;
+			background-color: #f5f6f7;
+		}
+		#header >div >div{
+			float: left;
+			padding: 3px;
+		} 
+		#header >div >div:hover{
+			background-color: #f1f2f3;
+		}
+
+		#header >div {
+			border-right: 1px solid #ccc;
+			height: 100%;
+		}
 	</style>
     <script type="text/javascript" src="/js/jquery.js"></script>
 	<script src="js/jquery-ui-1.9.2.custom.min.js" ></script>
@@ -42,19 +106,22 @@
 			style="width: 100px; float: left;">
 			<div
 				fm-repeat="data in canvas.getToolList()" >
-				<span 
+				<span
+					fm-class="data+''" 
+					style="display: inline-block; height:20px; width: 20px"
 					fm-click="canvas.setTool(data)" 
-					fm-bind="data">
+					>
 				</span>
 			</div>
 		</div>
 		<div
-			style="width: 100px; float: left;">
+			style="width: 100px; float: left; background:#fff;">
 			<div 
 				fm-repeat="data in canvas.getShapeList()" >
 				<span 
-					fm-click="canvas.setShape(data)" 
-					fm-bind="data">
+					fm-click="canvas.setShape(data)"
+					style="display: inline-block; height:20px; width: 20px" 
+					fm-class="data+''">
 				</span>
 			</div>
 		</div>
