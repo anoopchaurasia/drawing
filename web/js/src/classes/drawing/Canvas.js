@@ -311,6 +311,9 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
      * set mode as Pencil drawing
      */
     this.setTool = function (type) {
+        if(me.currentTool && me.currentTool.stop){
+            me.currentTool.stop();
+        }
         me.currentTool = toolManager.getTool(type);
         fileTagging.hideAllTags();
         me.currentTool.setCursor();
@@ -321,6 +324,9 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
      * set current tool as rectangle
      */
     this.setShape = function (type) {
+        if(me.currentTool && me.currentTool.stop){
+            me.currentTool.stop();
+        }
         me.currentTool = shapeManage.getShape(type);
         me.currentTool.setFill(false);
         fileTagging.hideAllTags();
@@ -383,4 +389,15 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
     this.getShapeList = function(){
         return shapeManage.getShapeList();
     }
+
+    this.saveCurrentDrawing = function(){
+        localStorage.savedShape = JSON.stringify(me.currentTool.getCurrentShapeInfo() );
+    };
+
+    this.applySettings = function(){
+
+        var data = JSON.parse(localStorage.savedShape);
+        me.currentTool = shapeManage.getShape(data.type);
+        me.currentTool.applyShape(data);
+    };
 };

@@ -4,7 +4,7 @@ fm.Class("CanvasDrawing", "Base");
 app.CanvasDrawing = function (base, me, Base){this.setMe=function(_me){me=_me;};
 	Static.main=function(){
 		web = webPath;
-		Starter.handle(require('http').createServer().listen(8080, "localhost"));
+		Starter.handle(require('http').createServer().listen(8081, "localhost"));
 	}
 	this.method = function( req, res ) {
 		var path =  web.sources + "/index.html";

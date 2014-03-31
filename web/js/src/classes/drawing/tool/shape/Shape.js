@@ -2,12 +2,13 @@
  * @namespace drawing.tool.shape
  */
 fm.Package("drawing.tool.shape");
+fm.Import("drawing.tool.shape.ShapeOverlay");
 fm.AbstractClass("Shape", "drawing.tool.Tool");
 
 /**
  * @class
  */
-drawing.tool.shape.Shape = function (base, me, Layer) {
+drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -23,6 +24,10 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
      */
     var layer;
 
+    /**
+     * @type {drawing.tool.shape.ShapeOverlay}
+     */
+    var overlay;
     /**
      * @type {drawing.Layer}
      */
@@ -48,6 +53,10 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
      * @return {Undefined}
      */
     this.draw = function (x, y) {
+        //return if overlay no longer active
+        if(overlay && !overlay.isActive()){
+            return;
+        }
         layer.clear();
         this.base.draw(x, y);
         me.drawShape(x, y, layer);
@@ -55,48 +64,8 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
             layer.context.fill();
         }
         layer.context.stroke();
-        if (isDragging) {
-            return;
-        }
-        var negativeX = x - me.currentStartPoint.x < 0;
-        var negativeY = y - me.currentStartPoint.y < 0;
-        element.css({
-            width: Math.abs(x - me.currentStartPoint.x),
-            height: Math.abs(y - me.currentStartPoint.y)
-        });
-        if (negativeX) {
-            element.css({
-                left: me.currentStartPoint.x + offset.left - Math.abs(x - me.currentStartPoint.x)
-            });
-        }
-        if (negativeY) {
-            element.css({
-                top: me.currentStartPoint.y + offset.top - Math.abs(y - me.currentStartPoint.y)
-            });
-        }
+        overlay.resize(x, y);
     };
-
-    var element, isDragging, offset;
-
-    function drawDashedRect(start, x, y) {
-        offset = layer.canvas.offset();
-        element = jQuery("<div></div>", {
-            class: 'canvas-text',
-            css: {
-                left: x + offset.left,
-                top: offset.top + y,
-                color: layer.context.strokeStyle,
-                width: Math.abs(x - start.x),
-                height: Math.abs(y - start.y)
-            },
-            keydown: function (e) {
-                if(!e.ctrlKey && !e.altKey && !e.shiftKey && e.which === 46){
-                    me.getSub().destroy();
-                }
-            },
-            tabindex: 1234
-        }).appendTo(layer.canvas.parent());
-    }
 
     /**
      * start drawing
@@ -104,7 +73,8 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
      * @param  {Float} y
      */
     this.start = function (x, y) {
-        if (element) {
+        //On second start call end drawing
+        if (overlay && overlay.isActive()) {
             destroyLayer();
             return;
         }
@@ -112,7 +82,7 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
         masterLayer.context.lineWidth = me.strokeWidth;
         this.base.start(x, y);
         layer.setContextProps(masterLayer.getContextProps());
-        drawDashedRect(me.currentStartPoint, x, y);
+        overlay = new ShapeOverlay(layer.canvas.offset(), x, y, layer.canvas.parent(), layer.context.strokeStyle, me);
     };
 
     this.setFill = function (isFill) {
@@ -124,75 +94,34 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
      */
     this.end = function () {
 
-        element.draggable({
-            start: function () {
-                lastChangeX = 0, lastChangeY = 0;
-                isDragging = true;
-            },
-            drag: function (e, helper) {
-                var xChange = helper.originalPosition.left - helper.position.left;
-                var yChange = helper.originalPosition.top - helper.position.top;
-                me.currentStartPoint.x -= xChange - lastChangeX;
-                me.currentStartPoint.y -= yChange - lastChangeY;
-                me.draw(me.currentEndPoint.x - (xChange - lastChangeX), me.currentEndPoint.y - (yChange - lastChangeY));
-                lastChangeX = xChange;
-                lastChangeY = yChange;
-            },
-            stop: function () {
-                isDragging = false;
+        if( !overlay.isActive() ){
+            return;
             }
-        }).resizable({
-            start: function () {
-                lastChangeX = 0, lastChangeY = 0;
-                isDragging = true;
-            },
-            resize: function (e, helper) {
-                var xChange = helper.originalSize.width - helper.size.width;
-                var yChange = helper.originalSize.height - helper.size.height;
-                me.draw(me.currentEndPoint.x - (xChange - lastChangeX), me.currentEndPoint.y - (yChange - lastChangeY));
-                lastChangeX = xChange;
-                lastChangeY = yChange;
-            },
-            stop: function () {
-                isDragging = false;
-            }
-        });
-        element.focus();
-        var lastChangeX, lastChangeY;
-
+        overlay.enableDrag();
+        overlay.enableResize();
     };
 
-    function destroyLayer(donotdraw) {
-        element.remove();
-        element = null;
+
+    /**
+     * destroy overlay
+     * and draw current shape on masterlayer
+     * hide secondary layer
+     */
+    function destroyLayer() {
+        overlay.destroy();
         if (!me.currentEndPoint) {
             return;
         }
-        if(!donotdraw){
             masterLayer.context.beginPath();
             me.drawShape(me.currentEndPoint.x, me.currentEndPoint.y, masterLayer);
             if (me.fillShape) {
                 masterLayer.context.fill();
             }
+        me.currentEndPoint = null;
             masterLayer.context.stroke();
             masterLayer.context.closePath();
-        }
-        me.currentEndPoint = null;
         me.base.end();
         layer.hide();
-    };
-
-
-    this.destroy = function(){
-        destroyLayer(true);
-    }
-
-    /**
-     * @override
-     * @return {String}
-     */
-    this.toString = function () {
-        return drawing.Canvas.MODE_LINE;
     };
 
     /**
@@ -213,7 +142,7 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
         masterLayer.context.lineWidth = width;
         me.base.setStrokeWidth(width);
         me.strokeWidth = width;
-        element && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
+        me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
     };
 
     /**
@@ -222,12 +151,45 @@ drawing.tool.shape.Shape = function (base, me, Layer) {
      */
     this.setStrokeColor = function (color) {
         me.base.setStrokeColor(color);
-        element && element.css('color', color);
+        overlay && overlay.setColor();
         masterLayer.context.strokeStyle = color;
         masterLayer.context.fillStyle = color;
-        element && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
+        me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
     };
 
+    /**
+     * called on tool change
+     * end current drawing
+     */
+    this.stop = function(){
+        if (overlay && overlay.isActive()) {
+            destroyLayer();
+            return;
+        }
+    };
+
+    this.getCurrentShapeInfo = function(){
+
+        return {
+            start: me.currentStartPoint,
+            end: me.currentEndPoint,
+            contextProperties: layer.getContextProps(),
+            type: me.getSub() + ""
+        };
+    };
+
+    this.applyShape = function (data){
+        var cls = me.getSub();
+        me.currentStartPoint = data.start;
+        layer.setContextProps(data.contextProperties);
+        var minX =Math.min(data.start.x, data.end.x);
+        var minY =Math.min(data.start.y, data.end.y);
+        cls.start(data.start.x - minX, data.start.y - minY);
+        me.currentEndPoint = data.end;
+        cls.draw(data.end.x - minX , data.end.y  -minY);
+        cls.end();
+
+    };
     /**
      * abstract draw shape
      */
