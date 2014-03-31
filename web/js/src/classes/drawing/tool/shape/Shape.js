@@ -107,19 +107,21 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      * and draw current shape on masterlayer
      * hide secondary layer
      */
-    function destroyLayer() {
+    function destroyLayer(dontDrawOnMaster) {
         overlay.destroy();
         if (!me.currentEndPoint) {
             return;
         }
+        if(!dontDrawOnMaster){
             masterLayer.context.beginPath();
             me.drawShape(me.currentEndPoint.x, me.currentEndPoint.y, masterLayer);
             if (me.fillShape) {
                 masterLayer.context.fill();
             }
-        me.currentEndPoint = null;
             masterLayer.context.stroke();
             masterLayer.context.closePath();
+        }
+        me.currentEndPoint = null;
         me.base.end();
         layer.hide();
     };
@@ -161,9 +163,9 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      * called on tool change
      * end current drawing
      */
-    this.stop = function(){
+    this.stop = function(dontDrawOnMaster){
         if (overlay && overlay.isActive()) {
-            destroyLayer();
+            destroyLayer(dontDrawOnMaster);
             return;
         }
     };

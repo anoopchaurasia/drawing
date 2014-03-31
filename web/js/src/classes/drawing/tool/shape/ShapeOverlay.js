@@ -47,11 +47,12 @@ drawing.tool.shape.ShapeOverlay = function (me) {
                 top: offset.top + y,
                 color: color
             },
-            keyup: function(e){
-                if( !e.ctrlKey && !e.shiftKey && !e.altKey && e.which === 46 ){
-                   // me.getSub().
-                }
-            }
+          ///  tabindex: 1,
+            // keyup: function(e){
+            //     if( !e.ctrlKey && !e.shiftKey && !e.altKey && e.which === 46 ){
+            //        // me.getSub().
+            //     }
+            // }
         }).appendTo(parentElement);
     };
 
@@ -160,6 +161,11 @@ drawing.tool.shape.ShapeOverlay = function (me) {
             start: dragOrResizeStart,
             resize: onResize,
             stop: onDragOrResizeStop
+        });
+        element.on('keyup', function (e) {
+            if(!e.ctrlKey && !e.altKey && !e.shiftKey && e.which === 46 ){
+                shape.getSub().stop(true);
+            }
         });
     };
 
