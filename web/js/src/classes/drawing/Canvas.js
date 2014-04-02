@@ -124,6 +124,8 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
         this.dblclick = enableDisableFreeHand;
         $(document).on('mouseup', stopdrawing);
         $(window).on('resize', this.onResize);
+        $(document).bind('paste', onPaste);
+ 
         offset = image.offset();
 
         contrast = new Contrast(new Layer(image, me, color), image);
@@ -144,6 +146,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
         toolManager = new ToolManager(masterLayer, image, color);
         //tools
         fileTagging = files.fileTagging;
+        fileTagging.hideAllTags = fileTagging.hideAllTags || function noop(){};
         me.currentTool = fileTagging;
     };
 
@@ -248,6 +251,16 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
         if (me.currentTool.end) {
             me.currentTool.end();
         }
+    }
+
+    function onPaste (event) {
+        var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+        var blob = items[0].getAsFile();
+        var reader = new FileReader();
+        reader.onload = function(event){
+            masterLayer.setImageDataURL(event.target.result);
+        }
+        reader.readAsDataURL(blob);
     }
 
     /**

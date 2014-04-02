@@ -174,7 +174,7 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      */
     this.destroy = function(){
         element.resizable('destroy');
-        element.draggable('destroy');
+        //element.draggable('destroy');
         element.remove();
         element = null;
     };
