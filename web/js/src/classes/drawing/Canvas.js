@@ -35,7 +35,9 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
         Static.Const.MODE_ARROW_LINE = 'arrow_line';
         Static.Const.MODE_TEXT = 'text_input';
         Static.Const.MODE_ROTATE = 'rotate';
-    };
+        Static.Const.strokeWidths = [1, 2, 4, 8, 12];
+        Static.Const.colors = ['#FF0000','#FFFF00','#0033FF','#009900','#FF9900','#660099'];
+    }
 
     this.setMe = function (_me) {
         me = _me;
@@ -125,10 +127,22 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
         $(document).on('mouseup', stopdrawing);
         $(window).on('resize', this.onResize);
         $(document).bind('paste', onPaste);
- 
+        $("#imagecontainer")
+            .width(image.width())
+            .height(image.height())
+            .resizable({
+                stop: function(){
+                    var width = $(this).width();
+                    var height = $(this).height();
+                    masterLayer.changeSize(width, height);
+                    secondaryLayer.changeSize(width, height);
+                    imageLayer.changeSize(width, height);
+                }
+            });
         offset = image.offset();
-
-        contrast = new Contrast(new Layer(image, me, color), image);
+        image.css('visibility','hidden');
+        var imageLayer = new Layer(image, me, color);
+        contrast = new Contrast(imageLayer, image);
         contrast.setContrast();
         masterLayer = new Layer(image, me, color);
 
@@ -342,6 +356,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
         }
         me.currentTool = shapeManage.getShape(type);
         me.currentTool.setFill(false);
+        me.currentTool.fill();
         fileTagging.hideAllTags();
         me.currentTool.setCursor();
     };
@@ -393,6 +408,10 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
      */
     this.colorChanged = function (color) {
         this.currentTool.setStrokeColor(color);
+    };
+
+    this.fillColorChanged =function(color){
+
     };
 
     this.getToolList = function(){

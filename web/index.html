@@ -1,90 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<style>
-		.canvas-text{
-			position: fixed !important;
-			margin: 0;
-			border: 1px dashed;
-			cursor: all-scroll;
-			border-radius: 2px;
-		}
-
-		.canvas-text textarea{
-			background-color: transparent;
-			border: none;
-			margin: 0;
-			color: inherit;
-		}
-		#header{
-			height: 200px;
-		}
-
-		.pencil{
-			background: url(/img/tools.png);
-			background-position: -6px -14px;
-		}
-
-		.filler{
-			background: url(/img/tools.png);
-			background-position: -28px -14px;
-		}
-
-		.eraser{
-			background: url(/img/tools.png);
-			background-position: -7px -42px;
-		}
-
-		.text_input{
-			background: url(/img/tools.png);
-			background-position: -53px -14px;
-		}
-
-		.line{
-			background: url(/img/shapes.png);
-			background-position: -2px -3px;
-		}
-
-		.rect{
-			background: url(/img/shapes.png);
-			background-position: -61px -3px;
-		}
-
-		.circle{
-			background: url(/img/shapes.png);
-			background-position: -42px -3px;
-		}
-
-		.arrow_line{
-			background: url(/img/shapes.png);
-			background-position: 62px -23px;
-		}
-		
-		.rotate{
-			background: url(/img/shapes.png);
-			background-position: 62px -23px;
-		}
-	
-		#header {
-			height: 86px;
-			border: 1px solid #ccc;
-			border-radius: 2px;
-			background-color: #f5f6f7;
-		}
-		#header >div >div{
-			float: left;
-			padding: 3px;
-		} 
-		#header >div >div:hover{
-			background-color: #f1f2f3;
-		}
-
-		#header >div {
-			border-right: 1px solid #ccc;
-			height: 100%;
-		}
-	</style>
 	<link type="text/css" rel="stylesheet" href="/css/jquery-ui/jquery-ui-1.10.4.custom.css" />
+    <link type="text/css" rel="stylesheet" href="/css/drawing.css" />
     <script type="text/javascript" src="/js/jquery.js"></script>
 	<script src="js/jquery-ui-1.10.4.custom.js" ></script>
 	<script type="text/javascript" src="/js/parser.js"></script>
@@ -99,7 +17,7 @@
 		   });
 		});
 	</script>
-        
+
 </head>
 <body>
 	<div id="header" fm-controller="drawing.controller.MainControlller">
@@ -110,26 +28,64 @@
 				<span
 					fm-class="data+''"
 					style="display: inline-block; height:20px; width: 20px"
-					fm-click="canvas.setTool(data)" 
+					fm-click="canvas.setTool(data)"
 					>
 				</span>
 			</div>
 		</div>
 		<div
 			style="width: 100px; float: left; background:#fff;">
-			<div 
+			<div
 				fm-repeat="data in canvas.getShapeList()" >
-				<span 
+				<span
 					fm-click="canvas.setShape(data)"
-					style="display: inline-block; height:20px; width: 20px" 
+					style="display: inline-block; height:20px; width: 20px"
 					fm-class="data+''">
 				</span>
 			</div>
 		</div>
+        <div
+            style="float:left">
+            <div
+                fm-repeat="width in canvas.strokeWidths"
+                fm-style="height: width"
+                fm-click="canvas.setStrokeWidth(width)"
+                style="width: 50px; background: #000; float: none;margin-top: 2px; padding: 0">
+
+            </div>
+
+        </div>
+        <div
+            style="float:left">
+            <div
+                fm-repeat="color in canvas.colors"
+                fm-style="background: color"
+                fm-click="canvas.colorChanged(color)"
+                style="width: 20px; height: 20px; margin-top: 2px;">
+
+            </div>
+
+        </div>
+        <div
+            style="float:left">
+            <div
+                fm-repeat="color in canvas.colors"
+                fm-style="background: color"
+                fm-click="canvas.currentTool.setFillColor(color)"
+                style="width: 20px; height: 20px; margin-top: 2px;">
+
+            </div>
+        </div>
+        <div
+            style="float:left">
+            <div
+                fm-click="canvas.currentTool.fill()">
+            </div>
+        </div>
 	</div>
-	<div>
-		<img 
-			id="image" 
+	<div id="imagecontainer">
+		<img
+			id="image"
 			src="/img/tooth_chart.png" />
 	</div>
 </body>

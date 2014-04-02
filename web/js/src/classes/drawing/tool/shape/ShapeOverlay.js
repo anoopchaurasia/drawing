@@ -42,6 +42,14 @@ drawing.tool.shape.ShapeOverlay = function (me) {
         offset = os;
         element = jQuery("<div></div>", {
             class: 'canvas-text',
+            // html:   "<span class='draggable top-left'></span>\
+            //         <span class='draggable top-middle'></span>\
+            //         <span class='draggable top-right'></span>\
+            //         <span class='draggable right-middle'></span>\
+            //         <span class='draggable bottom-right'></span>\
+            //         <span class='draggable bottom-middle'></span>\
+            //         <span class='draggable bottom-left'></span>\
+            //         <span class='draggable left-middle'></span>",
             css: {
                 left: x + offset.left,
                 top: offset.top + y,
@@ -133,6 +141,12 @@ drawing.tool.shape.ShapeOverlay = function (me) {
         reDrawAfterDragREsize(xChange, yChange );
     }
 
+    function onIconDrag(e, helper) {
+        var xChange = helper.originalPosition.left - helper.position.left;
+        var yChange = helper.originalPosition.top - helper.position.top;
+        reDrawAfterDragREsize(xChange, yChange );
+    }
+
     /**
      * handle resize/drag stop
      */
@@ -151,6 +165,12 @@ drawing.tool.shape.ShapeOverlay = function (me) {
             drag: onDrag,
             stop: onDragOrResizeStop
         });
+
+        // element.find(".draggable").draggable({
+        //     start:dragOrResizeStart,
+        //     drag: onIconDrag,
+        //     stop: onDragOrResizeStop
+        // });
     };
 
     /**
@@ -182,7 +202,7 @@ drawing.tool.shape.ShapeOverlay = function (me) {
     /**
      * set color of overay
      */
-    this.setColor = function(){
+    this.setColor = function(color){
         element && element.css('color', color);
     };
 

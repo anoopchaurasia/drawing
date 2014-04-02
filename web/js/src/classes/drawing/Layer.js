@@ -98,6 +98,14 @@ drawing.Layer = function (me) {
         me.canvas.show();
     };
 
+    this.changeSize = function(width, height){
+        var props = me.getContextProps();
+        var data  = me.canvas[0].toDataURL("image/png");
+        me.canvas[0].width = width;
+        me.canvas[0].height = height;
+        me.setImageDataURL(data);
+        me.setContextProps(props);
+    };
 
     /**
      * set properties to canvas

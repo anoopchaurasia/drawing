@@ -108,5 +108,10 @@ drawing.tool.Tool = function (me) {
         me.setCursor();
     };
 
+    this.setFillColor = function(color){
+        layer.context.fillStyle = color;
+        layer.context.stroke();
+    };
+
     Abstract.setCursor = function () {};
 };

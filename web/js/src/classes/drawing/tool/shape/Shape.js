@@ -89,6 +89,14 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
         me.fillShape = isFill;
     };
 
+
+    this.fill = function(){
+        me.setFill(true);
+        if (me.currentEndPoint){
+            me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
+        }
+    };
+
     /**
      * end of drawing
      */
@@ -153,9 +161,14 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      */
     this.setStrokeColor = function (color) {
         me.base.setStrokeColor(color);
-        overlay && overlay.setColor();
+        overlay && overlay.setColor(color);
         masterLayer.context.strokeStyle = color;
+        me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
+    };
+
+    this.setFillColor = function(color){
         masterLayer.context.fillStyle = color;
+        me.base.setFillColor(color);
         me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
     };
 
