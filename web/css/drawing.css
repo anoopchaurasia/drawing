@@ -2,6 +2,10 @@ body{
     background-color: #ccc;
 }
 
+.selected{
+    border: 2px solid #cdcdcd;
+}
+
 #imagecontainer{
     width: 100px;
     height: 100px;

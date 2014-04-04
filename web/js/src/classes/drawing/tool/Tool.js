@@ -24,6 +24,8 @@ drawing.tool.Tool = function (me) {
      */
     this.Tool = function (l) {
         this.strokeWidth = 1;
+        this.strokeColor = "#ddd";
+        this.fillColor = "#ddd";
         this.currentStartPoint = null;
         this.currentEndPoint = null;
         layer = l;
@@ -104,12 +106,12 @@ drawing.tool.Tool = function (me) {
     this.setStrokeColor = function (color) {
         this.strokeColor = color;
         layer.context.strokeStyle = color;
-        layer.context.fillStyle = color;
         me.setCursor();
     };
 
     this.setFillColor = function(color){
         layer.context.fillStyle = color;
+        this.fillColor = color;
         layer.context.stroke();
     };
 

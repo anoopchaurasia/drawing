@@ -58,23 +58,30 @@
         <div
             style="float:left">
             <div
-                fm-repeat="color in canvas.colors"
-                fm-style="background: color"
-                fm-click="canvas.colorChanged(color)"
+                fm-style="background: canvas.currentTool.strokeColor"
+                fm-click="setSelectedColorType('foreground')"
+                fm-class="getSelectedClass('foreground')"
                 style="width: 20px; height: 20px; margin-top: 2px;">
 
             </div>
+            <div
+                fm-style="background: canvas.currentTool.fillColor"
+                fm-click="setSelectedColorType('background')"
+                fm-class="getSelectedClass('background')"
+                style="width: 20px; height: 20px; margin-top: 2px;">
 
+            </div>
         </div>
         <div
             style="float:left">
             <div
                 fm-repeat="color in canvas.colors"
                 fm-style="background: color"
-                fm-click="canvas.currentTool.setFillColor(color)"
+                fm-click="colorChanged(color)"
                 style="width: 20px; height: 20px; margin-top: 2px;">
 
             </div>
+
         </div>
         <div
             style="float:left">
