@@ -26,9 +26,9 @@
 			<div
 				fm-repeat="data in canvas.getToolList()" >
 				<span
-					fm-class="data+''"
+					fm-class="index"
 					style="display: inline-block; height:20px; width: 20px"
-					fm-click="canvas.setTool(data)"
+					fm-click="canvas.setTool(index)"
 					>
 				</span>
 			</div>
@@ -38,9 +38,9 @@
 			<div
 				fm-repeat="data in canvas.getShapeList()" >
 				<span
-					fm-click="canvas.setShape(data)"
+					fm-click="canvas.setShape(index)"
 					style="display: inline-block; height:20px; width: 20px"
-					fm-class="data+''">
+					fm-class="index">
 				</span>
 			</div>
 		</div>
