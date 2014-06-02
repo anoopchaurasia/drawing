@@ -352,9 +352,11 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
         if(me.currentTool && me.currentTool.stop){
             me.currentTool.stop();
         }
-        me.currentTool = toolManager.getTool(type);
-        fileTagging.hideAllTags();
-        me.currentTool.setCursor();
+        toolManager.getTool(type, function(tool){
+            me.currentTool = tool;
+            fileTagging.hideAllTags();
+            me.currentTool.setCursor();
+        });
     };
 
 
@@ -365,11 +367,13 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
         if(me.currentTool && me.currentTool.stop){
             me.currentTool.stop();
         }
-        me.currentTool = shapeManage.getShape(type);
-        me.currentTool.setFill(false);
-        me.currentTool.fill();
-        fileTagging.hideAllTags();
-        me.currentTool.setCursor();
+        shapeManage.getShape(type, function(shape){
+            me.currentTool = shape;    
+            me.currentTool.setFill(false);
+            me.currentTool.fill();
+            fileTagging.hideAllTags();
+            me.currentTool.setCursor();
+        });
     };
 
     this.setModeContrast = function () {
