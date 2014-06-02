@@ -55,12 +55,61 @@ drawing.tool.Filling = function (base, me) {
         var pixelStack = [
             [startX, startY]
         ];
-        me.floodFill(pixelStack);
+       // me.floodFill(pixelStack);
+        me.toolFiller(masterLayer.context, canvasWidth, canvasHeight, startX, startY, {a: 255,
+            r:clickedColorR, g: clickedColorG, b: clickedColorB}, 10);
 
     };
 
     var completed = [];
 
+
+    this.toolFiller = function(context, W, H, x, y, color_to, sensitivity){
+        var img = context.getImageData(0, 0, W, H);
+        var imgData = img.data;
+        var k = ((y * (img.width * 4)) + (x * 4));
+        var dx = [ 0, -1, +1,  0];
+        var dy = [-1,  0,  0, +1];
+        var color_from = {
+            r: imgData[k+0],
+            g: imgData[k+1],
+            b: imgData[k+2],
+            a: imgData[k+3],
+            }
+        if(color_from.r == color_to.r &&
+          color_from.g == color_to.g &&
+          color_from.b == color_to.b &&
+          color_from.a == color_to.a)
+            return false;
+        var stack = [];
+        stack.push(x);
+        stack.push(y);
+        while (stack.length > 0){
+            var curPointY = stack.pop();
+            var curPointX = stack.pop();
+            for (var i = 0; i < 4; i++){
+                var nextPointX = curPointX + dx[i];
+                var nextPointY = curPointY + dy[i];
+                if (nextPointX < 0 || nextPointY < 0 || nextPointX >= W || nextPointY >= H)
+                    continue;
+                var k = (nextPointY * W + nextPointX) * 4;
+                //check
+                if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
+                  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
+                  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
+                  Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
+                    //fill pixel
+                    imgData[k+0] = color_to.r; //r
+                    imgData[k+1] = color_to.g; //g
+                    imgData[k+2] = color_to.b; //b
+                    imgData[k+3] = color_to.a; //a
+                    stack.push(nextPointX);
+                    stack.push(nextPointY);
+                    }
+                }
+            }
+        context.putImageData(img, 0, 0);
+    };
     this.floodFill = function (pixelStack) {
         var newPos, x, y, pixelPos, reachLeft, reachRight;
         var drawingBoundLeft = 0;
@@ -115,6 +164,30 @@ drawing.tool.Filling = function (base, me) {
                 }
 
                 pixelPos += canvasWidth * 4;
+            }
+        }
+        while (stack.length > 0){
+            var curPointY = stack.pop();
+            var curPointX = stack.pop();
+            for (var i = 0; i < 4; i++){
+                var nextPointX = curPointX + dx[i];
+                var nextPointY = curPointY + dy[i];
+                if (nextPointX < 0 || nextPointY < 0 || nextPointX >= W || nextPointY >= H)
+                    continue;
+                var k = (nextPointY * W + nextPointX) * 4;
+                //check
+                if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
+                  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
+                  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
+                  Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
+                    //fill pixel
+                    imgData[k+0] = color_to.r; //r
+                    imgData[k+1] = color_to.g; //g
+                    imgData[k+2] = color_to.b; //b
+                    imgData[k+3] = color_to.a; //a
+                    stack.push(nextPointX);
+                    stack.push(nextPointY);
+                }
             }
         }
         masterLayer.context.putImageData(colorLayerData, 0, 0);

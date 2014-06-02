@@ -5,6 +5,7 @@ fm.Package("drawing");
 fm.Import("drawing.UserActionList");
 fm.Import("drawing.Layer");
 fm.Import("drawing.Contrast");
+fm.Import("drawing.BackgroundLayer");
 fm.Import("drawing.tool.shape.ShapeManager");
 fm.Import("drawing.tool.ToolManager");
 fm.Class("Canvas");
@@ -13,7 +14,7 @@ fm.Class("Canvas");
  * Canvas
  * @class create canvas
  */
-drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, ToolManager) {
+drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer, ShapeManager, ToolManager) {
 
     "use strict";
 
@@ -24,17 +25,25 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
          * @constant
          * @type {String}
          */
-        Static.Const.MODE_PENCIL = 'pencil';
+        Static.Const.MODE_SELECT_OBJECT = 'object_selector';
+        Static.Const.MODE_SELECT_AREA = 'select_area';
+        Static.Const.MAGIC_WAND = 'magic_wand';
         Static.Const.MODE_ERASER = 'eraser';
-        Static.Const.MODE_ANNOTATION = 'annotation';
         Static.Const.MODE_FILLER = 'filler';
+        Static.Const.MODE_COLOR_PICKER = 'color_picker';
+        Static.Const.MODE_PENCIL = 'pencil';
         Static.Const.MODE_LINE = 'line';
-        Static.Const.MODE_CIRCLE = 'circle';
+        Static.Const.MODE_TEXT = 'text_input';
         Static.Const.MODE_RECTANGLE = 'rect';
+        Static.Const.MODE_CIRCLE = 'circle';
+        Static.Const.MODE_BRUSH = 'brush';
+        Static.Const.MODE_BLUR = 'blur';
+        Static.Const.MODE_SHARPEN = 'sharpen';
+        Static.Const.MODE_CLONE_OBJECT = 'clone_object';
         Static.Const.MODE_CONTRAST = 'contrast';
         Static.Const.MODE_ARROW_LINE = 'arrow_line';
-        Static.Const.MODE_TEXT = 'text_input';
         Static.Const.MODE_ROTATE = 'rotate';
+        Static.Const.MODE_ANNOTATION = 'annotation';
         Static.Const.strokeWidths = [1, 2, 4, 8, 12];
         Static.Const.colors = ['#FF0000','#FFFF00','#0033FF','#009900','#FF9900','#660099'];
     }
@@ -141,6 +150,8 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, ShapeManager, To
             });
         offset = image.offset();
         image.css('visibility','hidden');
+        var backgroudLayer = new BackgroundLayer(image, me, color);
+        backgroudLayer.fill(10);
         var imageLayer = new Layer(image, me, color);
         contrast = new Contrast(imageLayer, image);
         contrast.setContrast();

@@ -82,7 +82,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
         masterLayer.context.lineWidth = me.strokeWidth;
         this.base.start(x, y);
         layer.setContextProps(masterLayer.getContextProps());
-        overlay = new ShapeOverlay(layer.canvas.offset(), x, y, layer.canvas.parent(), layer.context.strokeStyle, me);
+        overlay = new ShapeOverlay(layer.canvas.offset(), x, y, layer.canvas.parent(), me);
     };
 
     this.setFill = function (isFill) {
@@ -161,7 +161,6 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      */
     this.setStrokeColor = function (color) {
         me.base.setStrokeColor(color);
-        overlay && overlay.setColor(color);
         masterLayer.context.strokeStyle = color;
         me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
     };

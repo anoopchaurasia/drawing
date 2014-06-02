@@ -20,80 +20,87 @@
 
 </head>
 <body>
-	<div id="header" fm-controller="drawing.controller.MainControlller">
-		<div
-			style="width: 100px; float: left;">
-			<div
-				fm-repeat="data in canvas.getToolList()" >
-				<span
-					fm-class="data+''"
-					style="display: inline-block; height:20px; width: 20px"
-					fm-click="canvas.setTool(data)"
-					>
-				</span>
-			</div>
-		</div>
-		<div
-			style="width: 100px; float: left; background:#fff;">
-			<div
-				fm-repeat="data in canvas.getShapeList()" >
-				<span
-					fm-click="canvas.setShape(data)"
-					style="display: inline-block; height:20px; width: 20px"
-					fm-class="data+''">
-				</span>
-			</div>
-		</div>
+    <div
+        style="display:-webkit-box;">
         <div
-            style="float:left">
+            id="header" fm-controller="drawing.controller.MainControlller">
             <div
-                fm-repeat="width in canvas.strokeWidths"
-                fm-style="height: width"
-                fm-click="canvas.setStrokeWidth(width)"
-                style="width: 50px; background: #000; float: none;margin-top: 2px; padding: 0">
+                style="width: 100px; float: left;">
+                <div
+                    fm-repeat="data in canvas.getToolList()" >
+                    <span
+                        fm-class="data+''"
+                        class="tool"
+                        fm-click="canvas.setTool(data)"
+                        >
+                    </span>
+                </div>
+            </div>
+            <div
+                style="width: 100px; float: left; background:#fff;">
+                <div
+                    fm-repeat="data in canvas.getShapeList()" >
+                    <span
+                        fm-click="canvas.setShape(data)"
+                        class="tool"
+                        fm-class="data+''">
+                    </span>
+                </div>
+            </div>
+            <div
+                style="float:left">
+                <div
+                    fm-repeat="width in canvas.strokeWidths"
+                    fm-style="height: width"
+                    fm-click="canvas.setStrokeWidth(width)"
+                    style="width: 50px; background: #000; float: none;margin-top: 2px; padding: 0">
+
+                </div>
 
             </div>
+            <div
+                style="float:left">
+                <div
+                    fm-style="background: canvas.currentTool.strokeColor"
+                    fm-click="setSelectedColorType('foreground')"
+                    fm-class="getSelectedClass('foreground')"
+                    style="width: 20px; height: 20px; margin-top: 2px;">
 
+                </div>
+                <div
+                    fm-style="background: canvas.currentTool.fillColor"
+                    fm-click="setSelectedColorType('background')"
+                    fm-class="getSelectedClass('background')"
+                    style="width: 20px; height: 20px; margin-top: 2px;">
+
+                </div>
+            </div>
+            <div
+                style="float:left">
+                <div
+                    fm-repeat="color in canvas.colors"
+                    fm-style="background: color"
+                    fm-click="colorChanged(color)"
+                    style="width: 20px; height: 20px; margin-top: 2px;">
+
+                </div>
+
+            </div>
+            <div
+                style="float:left">
+                <div
+                    fm-click="canvas.currentTool.fill()">
+                </div>
+            </div>
         </div>
         <div
-            style="float:left">
-            <div
-                fm-style="background: canvas.currentTool.strokeColor"
-                fm-click="setSelectedColorType('foreground')"
-                fm-class="getSelectedClass('foreground')"
-                style="width: 20px; height: 20px; margin-top: 2px;">
-
-            </div>
-            <div
-                fm-style="background: canvas.currentTool.fillColor"
-                fm-click="setSelectedColorType('background')"
-                fm-class="getSelectedClass('background')"
-                style="width: 20px; height: 20px; margin-top: 2px;">
-
-            </div>
+            style="box-flex: 1"
+            id="imagecontainer">
+            <img
+                id="image"
+                src="/img/tooth_chart.png" />
         </div>
-        <div
-            style="float:left">
-            <div
-                fm-repeat="color in canvas.colors"
-                fm-style="background: color"
-                fm-click="colorChanged(color)"
-                style="width: 20px; height: 20px; margin-top: 2px;">
+    </div>
 
-            </div>
-
-        </div>
-        <div
-            style="float:left">
-            <div
-                fm-click="canvas.currentTool.fill()">
-            </div>
-        </div>
-	</div>
-	<div id="imagecontainer">
-		<img
-			id="image"
-			src="/img/tooth_chart.png" />
-	</div>
 </body>
 </html>

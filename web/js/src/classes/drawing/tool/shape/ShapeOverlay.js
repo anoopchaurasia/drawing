@@ -37,7 +37,7 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      */
     var shape;
 
-    this.ShapeOverlay = function (os, x, y, parentElement, color, s) {
+    this.ShapeOverlay = function (os, x, y, parentElement, s) {
         shape = s;
         offset = os;
         element = jQuery("<div></div>", {
@@ -52,8 +52,7 @@ drawing.tool.shape.ShapeOverlay = function (me) {
             //         <span class='draggable left-middle'></span>",
             css: {
                 left: x + offset.left,
-                top: offset.top + y,
-                color: color
+                top: offset.top + y
             },
           ///  tabindex: 1,
             // keyup: function(e){
