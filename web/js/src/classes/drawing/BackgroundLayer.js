@@ -11,8 +11,8 @@ drawing.BackgroundLayer = function (base, me) {
         this.changeSize();
     };
 
-    this.changeSize = function () {
-        me.base.changeSize($(window).width() - 150, $(window).height());
+    this.changeSize = function (width, height) {
+        me.base.changeSize(width, height);
         me.fill(10); 
     };
 
