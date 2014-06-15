@@ -12,7 +12,7 @@ drawing.tool.Eraser = function (base, me) {
         me = _me;
     };
 
-    var layer;
+    var layerManager;
 
     /**
      * constructor
@@ -20,7 +20,7 @@ drawing.tool.Eraser = function (base, me) {
      */
     this.Eraser = function (l) {
         base(l);
-        layer = l;
+        layerManager = l;
     };
 
 
@@ -32,8 +32,8 @@ drawing.tool.Eraser = function (base, me) {
      */
     this.draw = function (x, y) {
         var strokeWidthHalf = Math.floor(me.strokeWidth);
-        layer.context.clearRect(x - strokeWidthHalf, y - strokeWidthHalf, me.strokeWidth * 2, me.strokeWidth * 2);
-        layer.context.stroke();
+        layerManager.selectedLayer.context.clearRect(x - strokeWidthHalf, y - strokeWidthHalf, me.strokeWidth * 2, me.strokeWidth * 2);
+        layerManager.selectedLayer.context.stroke();
     };
 
     this.start = function (x, y) {
@@ -45,7 +45,7 @@ drawing.tool.Eraser = function (base, me) {
      * set  cursor image based on selected size
      */
     this.setCursor = function () {
-        var canvas = layer.canvas;
+        var canvas = layerManager.selectedLayer.canvas;
         canvas.css("cursor", "url(/images/cursor/" + me.strokeWidth * 2 + "pix_eraser.cur), pointer");
     };
 

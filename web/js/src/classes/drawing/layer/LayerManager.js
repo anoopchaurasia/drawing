@@ -15,13 +15,13 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 		image = img; 
 		color = clr;
 		drawing = drw;
-		me.layerList = [];
         me.backgroudLayer = new BackgroundLayer(image, drawing, color, $("canvas#background-canvas"));
         me.backgroudLayer.fill(10);
         me.imageLayer = new Layer(image, drawing, color, $("canvas#image-canvas"));
         me.imageLayer.setImage(image);
         me.selectedLayer = me.imageLayer;
         me.frontLayer = new  Layer(image, drawing, color, $("canvas#front-canvas"));
+		me.layerList = [me.backgroudLayer, me.imageLayer];
 	};
 
 	this.getSelectedLayer = function () {

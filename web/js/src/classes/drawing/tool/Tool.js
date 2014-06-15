@@ -2,12 +2,13 @@
  * @namespace drawing.tool
  */
 fm.Package("drawing.tool");
+fm.Import("drawing.layer.Layer");
 fm.AbstractClass("Tool");
 /**
  * @class
  *
  */
-drawing.tool.Tool = function (me) {
+drawing.tool.Tool = function (me, Layer) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -38,7 +39,7 @@ drawing.tool.Tool = function (me) {
      */
     this.setStrokeWidth = function (width) {
         this.strokeWidth = width;
-        layer.context.lineWidth = width;
+        getContext().lineWidth = width;
         me.setCursor();
     };
 
@@ -52,9 +53,9 @@ drawing.tool.Tool = function (me) {
             x: x,
             y: y
         };
-        layer.context.beginPath();
+        getContext().beginPath();
         var quarterStrokeWidth = Math.floor(me.strokeWidth / 2);
-        layer.context.moveTo(x - quarterStrokeWidth, y);
+        getContext().moveTo(x - quarterStrokeWidth, y);
         me.setCursor();
     };
 
@@ -64,9 +65,15 @@ drawing.tool.Tool = function (me) {
      * @param  {Float} y
      */
     this.end = function (x, y) {
-        layer.context.closePath();
-
+        getContext().closePath();
     };
+
+    function getContext(){
+        if(layer.instanceOf(Layer)){
+            return layer.context;
+        }
+        return layer.selectedLayer.context;
+    }
 
     /**
      * draw for given point
@@ -86,7 +93,7 @@ drawing.tool.Tool = function (me) {
      * @param  {Float} y
      */
     this.mouseReenter = function (x, y) {
-        layer.context.moveTo(x, y);
+        getContext().moveTo(x, y);
     };
 
 
@@ -105,14 +112,14 @@ drawing.tool.Tool = function (me) {
      */
     this.setStrokeColor = function (color) {
         this.strokeColor = color;
-        layer.context.strokeStyle = color;
+        getContext().strokeStyle = color;
         me.setCursor();
     };
 
     this.setFillColor = function(color){
-        layer.context.fillStyle = color;
+        getContext().fillStyle = color;
         this.fillColor = color;
-        layer.context.stroke();
+        getContext().stroke();
     };
 
     Abstract.setCursor = function () {};

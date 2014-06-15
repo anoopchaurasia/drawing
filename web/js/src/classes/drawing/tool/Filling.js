@@ -8,14 +8,14 @@ drawing.tool.Filling = function (base, me) {
         me = _me
     };
 
-    var canvasWidth, canvasHeight, outlineLayerData, colorLayerData, clickedColorR, clickedColorG, clickedColorB, masterLayer;
+    var canvasWidth, canvasHeight, outlineLayerData, colorLayerData, clickedColorR, clickedColorG, clickedColorB, layerManager;
     var newColorR, newColorG, newColorB;
     this.Filling = function (ml, image, color) {
         base(ml);
-        masterLayer = ml;
-        canvasWidth = masterLayer.canvas[0].width;
-        canvasHeight = masterLayer.canvas[0].height;
-        outlineLayerData = masterLayer.getImageData(image).data;
+        layerManager = ml;
+        canvasWidth = layerManager.getSelectedLayer().canvas[0].width;
+        canvasHeight = layerManager.getSelectedLayer().canvas[0].height;
+        outlineLayerData = layerManager.getSelectedLayer().getImageData(image).data;
         this.setStrokeColor(color);
     };
 
@@ -47,7 +47,8 @@ drawing.tool.Filling = function (base, me) {
     this.fill = function (startX, startY) {
 
         startX = Math.floor(startX);
-        colorLayerData = masterLayer.context.getImageData(0, 0, canvasWidth, canvasHeight);
+        startY = Math.floor(startY);
+        colorLayerData = layerManager.getSelectedLayer().context.getImageData(0, 0, canvasWidth, canvasHeight);
         var pixelPos = (startY * canvasWidth + startX) * 4;
         clickedColorR = outlineLayerData[pixelPos + 0];
         clickedColorG = outlineLayerData[pixelPos + 1];
@@ -56,7 +57,7 @@ drawing.tool.Filling = function (base, me) {
             [startX, startY]
         ];
        // me.floodFill(pixelStack);
-        me.toolFiller(masterLayer.context, canvasWidth, canvasHeight, startX, startY, {a: 255,
+        me.toolFiller(layerManager.getSelectedLayer().context, canvasWidth, canvasHeight, startX, startY, {a: 255,
             r:clickedColorR, g: clickedColorG, b: clickedColorB}, 10);
 
     };
@@ -190,8 +191,8 @@ drawing.tool.Filling = function (base, me) {
                 }
             }
         }
-        masterLayer.context.putImageData(colorLayerData, 0, 0);
-        masterLayer.context.stroke();
+        layerManager.getSelectedLayer().context.putImageData(colorLayerData, 0, 0);
+        layerManager.getSelectedLayer().context.stroke();
     }
 
     function colorPixel(pixelPos) {
@@ -212,6 +213,6 @@ drawing.tool.Filling = function (base, me) {
     };
 
     this.setCursor = function () {
-        masterLayer.canvas.css("cursor", "url(/images/cursor/fill.cur), pointer");
+        layerManager.getSelectedLayer().canvas.css("cursor", "url(/images/cursor/fill.cur), pointer");
     };
 };
