@@ -76,7 +76,7 @@ drawing.tool.Text = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_TEXT;
+        return me.package.shape.ShapeManager.MODE_TEXT;
     };
 
     /**

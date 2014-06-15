@@ -50,6 +50,6 @@ drawing.tool.shape.ArrowLine = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_ARROW_LINE;
+        return me.package.ShapeManager.MODE_ARROW_LINE;
     };
 };

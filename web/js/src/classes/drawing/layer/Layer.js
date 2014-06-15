@@ -1,10 +1,10 @@
-fm.Package("drawing");
+fm.Package("drawing.layer");
 fm.Class("Layer");
 
 /**
  *@class create canvas layer
  */
-drawing.Layer = function (me) {
+drawing.layer.Layer = function (me) {
 
     'use strict';
 
@@ -20,18 +20,26 @@ drawing.Layer = function (me) {
     /**
      * Create a canvas over given image
      * @param {jImage} image
-     * @param {drawing.Canvas} canvasHandler
+     * @param {drawing.Drawing} canvasHandler
      * @param {String} color
      */
-    this.Layer = function (img, canvasHandler, color) {
+    this.Layer = function (img, canvasHandler, color, preaddedcanvas, cantainer) {
         image = img;
-        me.canvas = $("<canvas></canvas>", {
-            css: {
-                position: 'absolute',
-                left: image.position().left,
-                top: image.position().top
-            },
-        }).appendTo(image.parent());
+        if(preaddedcanvas){
+            me.canvas = preaddedcanvas;
+        }else {
+            if(cantainer){
+                me.canvas = $("<canvas></canvas>").appendTo(cantainer);
+            }else{
+                me.canvas = $("<canvas></canvas>").appendTo(image.parent());
+            }
+        }
+
+        me.canvas.css({
+            position: 'absolute',
+            left: image.position().left,
+            top: image.position().top
+        });
 
         me.canvas.attr('width', image.width());
         me.canvas.attr('height', image.height());

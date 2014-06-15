@@ -5,6 +5,30 @@ drawing.tool.shape.ShapeManager = function (me) {
         me = _me;
     };
 
+    this.init = function () {
+        /**
+         * @static
+         * @constant
+         * @type {String}
+         */
+        Static.Const.MODE_SELECT_OBJECT = 'object_selector';
+        Static.Const.MODE_SELECT_AREA = 'select_area';
+        Static.Const.MAGIC_WAND = 'magic_wand';
+        Static.Const.MODE_COLOR_PICKER = 'color_picker';
+        Static.Const.MODE_LINE = 'line';
+        Static.Const.MODE_TEXT = 'text_input';
+        Static.Const.MODE_RECTANGLE = 'rect';
+        Static.Const.MODE_CIRCLE = 'circle';
+        Static.Const.MODE_BRUSH = 'brush';
+        Static.Const.MODE_BLUR = 'blur';
+        Static.Const.MODE_SHARPEN = 'sharpen';
+        Static.Const.MODE_CLONE_OBJECT = 'clone_object';
+        Static.Const.MODE_CONTRAST = 'contrast';
+        Static.Const.MODE_ARROW_LINE = 'arrow_line';
+        Static.Const.MODE_ROTATE = 'rotate';
+        Static.Const.MODE_ANNOTATION = 'annotation';
+    }
+
     /**
      * various shape tools
      * @type {Object<drawing.tool.shape.Shape>}
@@ -15,24 +39,23 @@ drawing.tool.shape.ShapeManager = function (me) {
         shapeList = {};
         masterLayer = ml;
         secondaryLayer = sl;
-        var Canvas = drawing.Canvas;
         //coming
-        shapeList[Canvas.MODE_SELECT_OBJECT] = 'object_selector';
-        shapeList[Canvas.MODE_SELECT_AREA]       = 'select_area';
-        shapeList[Canvas.MAGIC_WAND]         = 'magic_wand';
-        shapeList[Canvas.MODE_COLOR_PICKER]      = 'color_picker';
-        shapeList[Canvas.MODE_TEXT]      = 'text_input';
-        shapeList[Canvas.MODE_ANNOTATION]        = 'annotation';
-        shapeList[Canvas.MODE_BRUSH]         = 'brush';
-        shapeList[Canvas.MODE_BLUR]      = 'blur';
-        shapeList[Canvas.MODE_SHARPEN]       = 'sharpen';
-        shapeList[Canvas.MODE_CLONE_OBJECT]      = 'clone_object';
-        shapeList[Canvas.MODE_CONTRAST]      = 'contrast';
-        shapeList[Canvas.MODE_LINE] = "drawing.tool.shape.Line"; // new Line(masterLayer, secondaryLayer);
-        shapeList[Canvas.MODE_CIRCLE] = "drawing.tool.shape.Circle"; // new Circle(masterLayer, secondaryLayer);
-        shapeList[Canvas.MODE_RECTANGLE] = "drawing.tool.shape.Rotate"; // new Rectangle(masterLayer, secondaryLayer);
-        shapeList[Canvas.MODE_ARROW_LINE] = "drawing.tool.shape.Rectangle"; //new ArrowLine(masterLayer, secondaryLayer);
-        shapeList[Canvas.MODE_ROTATE] = "drawing.tool.shape.ArrowLine"; //new Rotate(masterLayer, secondaryLayer);
+        shapeList[me.MODE_SELECT_OBJECT] = 'object_selector';
+        shapeList[me.MODE_SELECT_AREA]       = 'select_area';
+        shapeList[me.MAGIC_WAND]         = 'magic_wand';
+        shapeList[me.MODE_COLOR_PICKER]      = 'color_picker';
+        shapeList[me.MODE_TEXT]      = 'text_input';
+        shapeList[me.MODE_ANNOTATION]        = 'annotation';
+        shapeList[me.MODE_BRUSH]         = 'brush';
+        shapeList[me.MODE_BLUR]      = 'blur';
+        shapeList[me.MODE_SHARPEN]       = 'sharpen';
+        shapeList[me.MODE_CLONE_OBJECT]      = 'clone_object';
+        shapeList[me.MODE_CONTRAST]      = 'contrast';
+        shapeList[me.MODE_LINE] = "drawing.tool.shape.Line"; // new Line(masterLayer, secondaryLayer);
+        shapeList[me.MODE_CIRCLE] = "drawing.tool.shape.Circle"; // new Circle(masterLayer, secondaryLayer);
+        shapeList[me.MODE_RECTANGLE] = "drawing.tool.shape.Rotate"; // new Rectangle(masterLayer, secondaryLayer);
+        shapeList[me.MODE_ARROW_LINE] = "drawing.tool.shape.Rectangle"; //new ArrowLine(masterLayer, secondaryLayer);
+        shapeList[me.MODE_ROTATE] = "drawing.tool.shape.ArrowLine"; //new Rotate(masterLayer, secondaryLayer);
     };
 
     this.getShape = function (type, cb) {

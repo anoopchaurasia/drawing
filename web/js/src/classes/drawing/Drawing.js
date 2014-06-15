@@ -2,19 +2,20 @@
  * @namespace drawing
  */
 fm.Package("drawing");
+fm.Include("drawing.controller.mainController");
 fm.Import("drawing.UserActionList");
-fm.Import("drawing.Layer");
+fm.Import("drawing.layer.Layer");
 fm.Import("drawing.Contrast");
-fm.Import("drawing.BackgroundLayer");
 fm.Import("drawing.tool.shape.ShapeManager");
 fm.Import("drawing.tool.ToolManager");
-fm.Class("Canvas");
+fm.Import("drawing.layer.LayerManager");
+fm.Class("Drawing");
 
 /**
- * Canvas
- * @class create canvas
+ * Drawing
+ * @class create Drawing
  */
-drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer, ShapeManager, ToolManager) {
+drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, ToolManager, LayerManager) {
 
     "use strict";
 
@@ -25,25 +26,6 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
          * @constant
          * @type {String}
          */
-        Static.Const.MODE_SELECT_OBJECT = 'object_selector';
-        Static.Const.MODE_SELECT_AREA = 'select_area';
-        Static.Const.MAGIC_WAND = 'magic_wand';
-        Static.Const.MODE_ERASER = 'eraser';
-        Static.Const.MODE_FILLER = 'filler';
-        Static.Const.MODE_COLOR_PICKER = 'color_picker';
-        Static.Const.MODE_PENCIL = 'pencil';
-        Static.Const.MODE_LINE = 'line';
-        Static.Const.MODE_TEXT = 'text_input';
-        Static.Const.MODE_RECTANGLE = 'rect';
-        Static.Const.MODE_CIRCLE = 'circle';
-        Static.Const.MODE_BRUSH = 'brush';
-        Static.Const.MODE_BLUR = 'blur';
-        Static.Const.MODE_SHARPEN = 'sharpen';
-        Static.Const.MODE_CLONE_OBJECT = 'clone_object';
-        Static.Const.MODE_CONTRAST = 'contrast';
-        Static.Const.MODE_ARROW_LINE = 'arrow_line';
-        Static.Const.MODE_ROTATE = 'rotate';
-        Static.Const.MODE_ANNOTATION = 'annotation';
         Static.Const.strokeWidths = [1, 2, 4, 8, 12];
         Static.Const.colors = ['#FF0000','#FFFF00','#0033FF','#009900','#FF9900','#660099'];
     }
@@ -89,7 +71,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
      * canvas over which final drawing
      * @type {drawing.Layer}
      */
-    var masterLayer;
+    var selectedLayer;
 
     /**
      * image offset;
@@ -117,9 +99,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
      *  @type {drawing.tool.shape.ShapeManager}
      */
 
-    var shapeManage, toolManager;
-
-    this.Canvas = function (img, files, color) {
+    this.Drawing = function (img, files, color) {
         image = img;
         userActions = new UserActionList();
         resizeCallbacks = [];
@@ -143,34 +123,25 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
                 stop: function(){
                     var width = $(this).width();
                     var height = $(this).height();
-                    masterLayer.changeSize(width, height);
-                    secondaryLayer.changeSize(width, height);
-                    imageLayer.changeSize(width, height);
+                    me.layerManager.getSelectedLayer().changeSize(width, height);
+                    me.layerManager.frontLayer.changeSize(width, height);
+                    me.layerManager.imageLayer.changeSize(width, height);
                 }
             });
         offset = image.offset();
         image.css('visibility','hidden');
-        var backgroudLayer = new BackgroundLayer(image, me, color);
-        backgroudLayer.fill(10);
-        var imageLayer = new Layer(image, me, color);
-        contrast = new Contrast(imageLayer, image);
-        contrast.setContrast();
-        masterLayer = new Layer(image, me, color);
-
-        /**
-         * secodory canvas layer for shape tools
-         * @type {drawing.Layer}
-         */
-        var secondaryLayer = new Layer(image, me, color);
-        secondaryLayer.hide();
-
+        // contrast = new Contrast(imageLayer, image);
+        // contrast.setContrast();
+       
+        me.layerManager = new LayerManager(image, color, me);
         //shape manager
-        shapeManage = new ShapeManager(masterLayer, secondaryLayer);
+        me.shapeManager = new ShapeManager(me.layerManager, me.layerManager.frontLayer);
 
         //Tool manager
-        toolManager = new ToolManager(masterLayer, image, color);
+        me.toolManager = new ToolManager(me.layerManager, image, color);
+
         //tools
-        fileTagging = files.fileTagging;
+        fileTagging =  {};
         fileTagging.hideAllTags = fileTagging.hideAllTags || function noop(){};
         me.currentTool = fileTagging;
     };
@@ -185,7 +156,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
         if (mouseDownPos.x !== e.pageX || mouseDownPos.y !== e.pageY) {
             return false;
         }
-        var canvas = masterLayer.canvas;
+        var canvas = me.layerManager.getSelectedLayer().canvas;
         if ("" + me.currentTool === me.MODE_FILLER) {
             me.currentTool.fill(e.pageX - offset.left, e.pageY - offset.top);
         } else if (fileTagging === me.currentTool) {
@@ -283,7 +254,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
         var blob = items[0].getAsFile();
         var reader = new FileReader();
         reader.onload = function(event){
-            masterLayer.setImageDataURL(event.target.result);
+            me.layerManager.getSelectedLayer().setImageDataURL(event.target.result);
         }
         reader.readAsDataURL(blob);
     }
@@ -312,7 +283,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
      * @return {Undefined}
      */
     this.clear = function () {
-        masterLayer.clear();
+        me.layerManager.getSelectedLayer().clear();
     };
 
     /**
@@ -342,7 +313,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
      * @return {Array}
      */
     this.getImageData = function () {
-        return masterLayer.getImageData(image);
+        return me.layerManager.getSelectedLayer().getImageData(image);
     };
 
     /**
@@ -352,7 +323,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
         if(me.currentTool && me.currentTool.stop){
             me.currentTool.stop();
         }
-        toolManager.getTool(type, function(tool){
+        me.toolManager.getTool(type, function(tool){
             me.currentTool = tool;
             fileTagging.hideAllTags();
             me.currentTool.setCursor();
@@ -367,7 +338,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
         if(me.currentTool && me.currentTool.stop){
             me.currentTool.stop();
         }
-        shapeManage.getShape(type, function(shape){
+        me.shapeManager.getShape(type, function(shape){
             me.currentTool = shape;    
             me.currentTool.setFill(false);
             me.currentTool.fill();
@@ -389,7 +360,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
     this.enableAnnotation = function () {
         fileTagging.showAllTags();
         me.currentTool = fileTagging;
-        masterLayer.canvas.css("cursor", "");
+        me.layerManager.getSelectedLayer().canvas.css("cursor", "");
     };
 
     /**
@@ -405,7 +376,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
      * @return {String}
      */
     this.getImageDataURL = function () {
-        return masterLayer.canvas[0].toDataURL("image/png");
+        return me.layerManager.getSelectedLayer().canvas[0].toDataURL("image/png");
     };
 
     /**
@@ -413,7 +384,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
      * @param {String} imagedata
      */
     this.setImageDataURL = function (imagedata) {
-        masterLayer.setImageDataURL(imagedata);
+        me.layerManager.getSelectedLayer().setImageDataURL(imagedata);
     };
 
     /**
@@ -430,11 +401,11 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
     };
 
     this.getToolList = function(){
-        return toolManager.getToolList();
+        return me.toolManager.getToolList();
     };
 
     this.getShapeList = function(){
-        return shapeManage.getShapeList();
+        return me.shapeManager.getShapeList();
     }
 
     this.saveCurrentDrawing = function(){
@@ -444,7 +415,7 @@ drawing.Canvas = function (me, UserActionList, Layer, Contrast, BackgroundLayer,
     this.applySettings = function(){
 
         var data = JSON.parse(localStorage.savedShape);
-        me.currentTool = shapeManage.getShape(data.type);
+        me.currentTool = me.shapeManager.getShape(data.type);
         me.currentTool.applyShape(data);
     };
 };

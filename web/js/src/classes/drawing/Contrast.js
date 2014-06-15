@@ -41,6 +41,6 @@ drawing.Contrast = function (me) {
     }
 
     this.toString = function () {
-        return drawing.Canvas.MODE_CONTRAST;
+        return drawing.Drawing.MODE_CONTRAST;
     };
 };

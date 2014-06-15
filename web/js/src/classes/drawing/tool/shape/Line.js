@@ -37,6 +37,6 @@ drawing.tool.shape.Line = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_LINE;
+        return me.package.ShapeManager.MODE_LINE;
     };
 };

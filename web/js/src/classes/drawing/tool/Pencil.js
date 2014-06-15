@@ -45,7 +45,7 @@ drawing.tool.Pencil = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_PENCIL;
+        return me.package.ToolManager.MODE_PENCIL;
     };
 
     /**

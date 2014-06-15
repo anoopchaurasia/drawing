@@ -1,14 +1,14 @@
-fm.Package("drawing");
-fm.Class("BackgroundLayer", "drawing.Layer");
+fm.Package("drawing.layer");
+fm.Class("BackgroundLayer", "drawing.layer.Layer");
 
 /**
  *@class create canvas BackgroundLayer
  */
-drawing.BackgroundLayer = function (base, me) {
+drawing.layer.BackgroundLayer = function (base, me) {
    this.setMe=function(_me){me=_me;}
-    this.BackgroundLayer = function(image, canvas, color){
-        me.base(image, canvas, color);
-        this.changeSize();
+    this.BackgroundLayer = function(image, canvas, color, canvasCont){
+        me.base(image, canvas, color, canvasCont);
+        this.changeSize(image.width(), image.height());
     };
 
     this.changeSize = function (width, height) {

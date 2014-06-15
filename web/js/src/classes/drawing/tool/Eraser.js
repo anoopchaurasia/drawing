@@ -54,6 +54,6 @@ drawing.tool.Eraser = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_ERASER;
+        return me.package.ToolManager.MODE_ERASER;
     };
 };

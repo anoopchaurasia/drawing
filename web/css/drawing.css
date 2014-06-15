@@ -190,3 +190,12 @@ body{
     left:0;
     top: 50%;
 }
+
+.left.header{
+    position: relative;
+    width: 100px;
+}
+
+.selected{
+    background-color: #ff00ff;
+}

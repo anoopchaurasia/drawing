@@ -8,7 +8,7 @@ fm.AbstractClass("Shape", "drawing.tool.Tool");
 /**
  * @class
  */
-drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
+drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -31,7 +31,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
     /**
      * @type {drawing.Layer}
      */
-    var masterLayer;
+    var layerManager;
 
     /**
      * constructor
@@ -39,7 +39,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      * @param {drawing.Layer} l
      */
     this.Shape = function (ml, l) {
-        masterLayer = ml;
+        layerManager = ml;
         me.strokeWidth = 1;
         layer = l;
         this.fillShape = false;
@@ -79,9 +79,9 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
             return;
         }
         layer.show();
-        masterLayer.context.lineWidth = me.strokeWidth;
+        layerManager.getSelectedLayer().context.lineWidth = me.strokeWidth;
         this.base.start(x, y);
-        layer.setContextProps(masterLayer.getContextProps());
+        layer.setContextProps(layerManager.getSelectedLayer().getContextProps());
         overlay = new ShapeOverlay(layer.canvas.offset(), x, y, layer.canvas.parent(), me);
     };
 
@@ -101,10 +101,9 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      * end of drawing
      */
     this.end = function () {
-
         if( !overlay.isActive() ){
             return;
-            }
+        }
         overlay.enableDrag();
         overlay.enableResize();
     };
@@ -112,7 +111,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
 
     /**
      * destroy overlay
-     * and draw current shape on masterlayer
+     * and draw current shape on layerManager.getSelectedLayer()
      * hide secondary layer
      */
     function destroyLayer(dontDrawOnMaster) {
@@ -121,13 +120,13 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
             return;
         }
         if(!dontDrawOnMaster){
-            masterLayer.context.beginPath();
-            me.drawShape(me.currentEndPoint.x, me.currentEndPoint.y, masterLayer);
+            layerManager.getSelectedLayer().context.beginPath();
+            me.drawShape(me.currentEndPoint.x, me.currentEndPoint.y, layerManager.getSelectedLayer());
             if (me.fillShape) {
-                masterLayer.context.fill();
+                layerManager.getSelectedLayer().context.fill();
             }
-            masterLayer.context.stroke();
-            masterLayer.context.closePath();
+            layerManager.getSelectedLayer().context.stroke();
+            layerManager.getSelectedLayer().context.closePath();
         }
         me.currentEndPoint = null;
         me.base.end();
@@ -138,7 +137,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      * set  cursor image based on selected size
      */
     this.setCursor = function () {
-        masterLayer.canvas.css("cursor", "pointer");
+        layerManager.getSelectedLayer().canvas.css("cursor", "pointer");
         layer.canvas.css("cursor", "pointer");
     };
 
@@ -149,7 +148,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      * @return {Undefined}
      */
     this.setStrokeWidth = function (width) {
-        masterLayer.context.lineWidth = width;
+        layerManager.getSelectedLayer().context.lineWidth = width;
         me.base.setStrokeWidth(width);
         me.strokeWidth = width;
         me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
@@ -161,12 +160,12 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay, Layer) {
      */
     this.setStrokeColor = function (color) {
         me.base.setStrokeColor(color);
-        masterLayer.context.strokeStyle = color;
+        layerManager.getSelectedLayer().context.strokeStyle = color;
         me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
     };
 
     this.setFillColor = function(color){
-        masterLayer.context.fillStyle = color;
+        layerManager.getSelectedLayer().context.fillStyle = color;
         me.base.setFillColor(color);
         me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
     };

@@ -54,6 +54,6 @@ drawing.tool.shape.Rotate = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_ROTATE;
+        return me.package.ShapeManager.MODE_ROTATE;
     };
 };

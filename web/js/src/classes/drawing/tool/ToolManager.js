@@ -6,6 +6,18 @@ drawing.tool.ToolManager = function (me) {
         me = _me;
     };
 
+     this.init = function () {
+        /**
+         * @static
+         * @constant
+         * @type {String}
+         */
+        Static.Const.MODE_FILLER = 'filler';
+        Static.Const.MODE_ERASER = 'eraser';
+        Static.Const.MODE_PENCIL = 'pencil';
+    }
+
+
     /**
      * various tools
      * @type {Object<drawing.tool.Tool>}
@@ -17,11 +29,9 @@ drawing.tool.ToolManager = function (me) {
         masterLayer = ml;
         image = img;
         color = c;
-        var Canvas = drawing.Canvas;
-        toolList[Canvas.MODE_FILLER] = "drawing.tool.Filling";// new Filling(masterLayer, image, color);
-        toolList[Canvas.MODE_ERASER] = "drawing.tool.Eraser"; // new Eraser(masterLayer);
-        toolList[Canvas.MODE_PENCIL] = "drawing.tool.Pencil"; // new Pencil(masterLayer);
-        toolList[Canvas.MODE_TEXT] = "drawing.tool.Text" // new Text(masterLayer);
+        toolList[me.MODE_FILLER] = "drawing.tool.Filling";// new Filling(masterLayer, image, color);
+        toolList[me.MODE_ERASER] = "drawing.tool.Eraser"; // new Eraser(masterLayer);
+        toolList[me.MODE_PENCIL] = "drawing.tool.Pencil"; // new Pencil(masterLayer);
     };
 
     this.getTool = function (type, cb) {

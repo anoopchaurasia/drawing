@@ -202,7 +202,7 @@ drawing.tool.Filling = function (base, me) {
     }
 
     this.toString = function () {
-        return drawing.Canvas.MODE_FILLER;
+        return me.package.ToolManager.MODE_FILLER;
     };
 
     this.setStrokeColor = function (color) {

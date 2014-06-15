@@ -51,6 +51,6 @@ drawing.tool.shape.Circle = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_CIRCLE;
+        return me.package.ShapeManager.MODE_CIRCLE;
     };
 };

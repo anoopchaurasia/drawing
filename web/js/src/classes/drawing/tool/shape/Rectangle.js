@@ -37,6 +37,6 @@ drawing.tool.shape.Rectangle = function (base, me) {
      * @return {String}
      */
     this.toString = function () {
-        return drawing.Canvas.MODE_RECTANGLE;
+        return me.package.ShapeManager.MODE_RECTANGLE;
     };
 };

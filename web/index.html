@@ -3,35 +3,31 @@
 <head>
 	<link type="text/css" rel="stylesheet" href="/css/jquery-ui/jquery-ui-1.10.4.custom.css" />
     <link type="text/css" rel="stylesheet" href="/css/drawing.css" />
-    <script type="text/javascript" src="/js/jquery.js"></script>
-	<script src="js/jquery-ui-1.10.4.custom.js" ></script>
-	<script type="text/javascript" src="/js/parser.js"></script>
+    <script type="text/javascript" src="/js/src/lib/jquery.js"></script>
+	<script src="js/src/lib/jquery-ui-1.10.4.custom.js" ></script>
+	<script type="text/javascript" src="/js/src/lib/angular.js"></script>
     <script type="text/javascript" src="jsfm.js"></script>
     <script>
 		fm.packages.drawing = "/js/src/classes";
 		fm.packages.common = "/js/src/classes";
-		fm.Import("common.Utility");
-		fm.Include("drawing.controller.MainControlller",function(){
-			$(document).ready(function(){
-				new drawing.controller.MainControlller(jQuery("#image"), {fileTagging:{}}, "#ff0000" );
-		   });
-		});
+		fm.Include("/js/src/App.js");
 	</script>
 
 </head>
 <body>
     <div
+        ng-controller="mainController"
         style="display:-webkit-box;">
         <div
-            id="header" fm-controller="drawing.controller.MainControlller">
+            id="header">
             <div
                 style="width: 100px; float: left;">
                 <div
-                    fm-repeat="data in canvas.getToolList()" >
+                    ng-repeat="(index,data) in drawing.getToolList()" >
                     <span
-                        fm-class="data+''"
+                        ng-class="index"
                         class="tool"
-                        fm-click="canvas.setTool(data)"
+                        ng-click="drawing.setTool(index)"
                         >
                     </span>
                 </div>
@@ -39,20 +35,20 @@
             <div
                 style="width: 100px; float: left; background:#fff;">
                 <div
-                    fm-repeat="data in canvas.getShapeList()" >
+                    ng-repeat="(index,data) in drawing.getShapeList()" >
                     <span
-                        fm-click="canvas.setShape(data)"
+                        ng-click="drawing.setShape(index)"
                         class="tool"
-                        fm-class="data+''">
+                        ng-class="index">
                     </span>
                 </div>
             </div>
             <div
                 style="float:left">
                 <div
-                    fm-repeat="width in canvas.strokeWidths"
-                    fm-style="height: width"
-                    fm-click="canvas.setStrokeWidth(width)"
+                    ng-repeat="width in drawing.strokeWidths"
+                    ng-style="{height: width}"
+                    ng-click="drawing.setStrokeWidth(width)"
                     style="width: 50px; background: #000; float: none;margin-top: 2px; padding: 0">
 
                 </div>
@@ -61,16 +57,16 @@
             <div
                 style="float:left">
                 <div
-                    fm-style="background: canvas.currentTool.strokeColor"
-                    fm-click="setSelectedColorType('foreground')"
-                    fm-class="getSelectedClass('foreground')"
+                    ng-style="{background: drawing.currentTool.strokeColor}"
+                    ng-click="setSelectedColorType('foreground')"
+                    ng-class="getSelectedClass('foreground')"
                     style="width: 20px; height: 20px; margin-top: 2px;">
 
                 </div>
                 <div
-                    fm-style="background: canvas.currentTool.fillColor"
-                    fm-click="setSelectedColorType('background')"
-                    fm-class="getSelectedClass('background')"
+                    ng-style="{background: drawing.currentTool.fillColor}"
+                    ng-click="setSelectedColorType('background')"
+                    ng-class="getSelectedClass('background')"
                     style="width: 20px; height: 20px; margin-top: 2px;">
 
                 </div>
@@ -78,9 +74,9 @@
             <div
                 style="float:left">
                 <div
-                    fm-repeat="color in canvas.colors"
-                    fm-style="background: color"
-                    fm-click="colorChanged(color)"
+                    ng-repeat="color in drawing.colors"
+                    ng-style="{background: color}"
+                    ng-click="colorChanged(color)"
                     style="width: 20px; height: 20px; margin-top: 2px;">
 
                 </div>
@@ -89,7 +85,7 @@
             <div
                 style="float:left">
                 <div
-                    fm-click="canvas.currentTool.fill()">
+                    ng-click="drawing.currentTool.fill()">
                 </div>
             </div>
         </div>
@@ -97,8 +93,25 @@
             style="box-flex: 1"
             id="imagecontainer">
             <img
-                id="image"
-                src="/img/tooth_chart.png" />
+                id="image" />
+            <canvas id="background-canvas"></canvas>
+            <canvas id="image-canvas"></canvas>
+            <div id="layerContainer">               
+            </div>
+            <canvas id="front-canvas"></canvas>
+        </div>
+        <div class="left header">
+            <div id="layerController">
+                <div class="head" ng-click="drawing.layerManager.addLayer()">
+                    + add
+                </div>
+                <div
+                    ng-class="{selected: drawing.layerManager.isSelected(layer)}"
+                    ng-click="drawing.layerManager.selectLayer(layer)" 
+                    ng-repeat="layer in drawing.layerManager.layerList">
+                    <span>anoop</span>
+                </div>
+            </div>
         </div>
     </div>
 
