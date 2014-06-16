@@ -1,5 +1,6 @@
 function mainController($scope, $rootScope) {
-	$rootScope.drawing = new drawing.Drawing($("#image"), {}, "#ff0000");
+    
+	$rootScope.drawing = new drawing.Drawing();
 
 	this.colorChanged = function(color){
        

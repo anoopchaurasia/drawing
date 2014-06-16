@@ -10,18 +10,14 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 		me = _me;
 	}
 
-	var image, color, drawing;
-	this.LayerManager = function(img, clr, drw){
-		image = img; 
-		color = clr;
+	var drawing;
+	this.LayerManager = function(drw){
 		drawing = drw;
-        me.backgroudLayer = new BackgroundLayer(image, drawing, color, $("canvas#background-canvas"));
+        me.backgroudLayer = new BackgroundLayer(drawing, $("canvas#background-canvas"));
         me.backgroudLayer.fill(10);
-        me.imageLayer = new Layer(image, drawing, color, $("canvas#image-canvas"));
-        me.imageLayer.setImage(image);
-        me.selectedLayer = me.imageLayer;
-        me.frontLayer = new  Layer(image, drawing, color, $("canvas#front-canvas"));
-		me.layerList = [me.backgroudLayer, me.imageLayer];
+        me.selectedLayer = me.backgroudLayer;
+        me.frontLayer = new  Layer(drawing, $("canvas#front-canvas"));
+		me.layerList = [me.backgroudLayer];
 	};
 
 	this.getSelectedLayer = function () {
@@ -29,7 +25,13 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 	};
 
     this.addLayer = function(){
-        me.layerList.push(new Layer(image, drawing, color, undefined, $("#layerContainer")));
+        me.layerList.push(new Layer(drawing, undefined, $("#layerContainer")));
+        me.selectedLayer = me.layerList[me.layerList.length - 1];
+    };
+
+    this.addImageLayer = function(data){
+        me.addLayer();
+        me.selectedLayer.setImageDataURL(data);
     };
 
     this.selectLayer = function(layer){

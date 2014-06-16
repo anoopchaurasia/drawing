@@ -23,9 +23,14 @@ body{
     border: 2px solid #cdcdcd;
 }
 
-#imagecontainer{
-    -webkit-box-flex: 1;
+#container{
+    position: relative;
     border: 1px dashed #999;
+}
+
+#layerContainer{
+    width: 100%;
+    height: 100%;
 }
 
 .canvas-text{
@@ -198,4 +203,8 @@ body{
 
 .selected{
     background-color: #ff00ff;
+}
+
+.add-image{
+    margin-left: -99999px;
 }

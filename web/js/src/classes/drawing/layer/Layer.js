@@ -20,40 +20,33 @@ drawing.layer.Layer = function (me) {
     /**
      * Create a canvas over given image
      * @param {jImage} image
-     * @param {drawing.Drawing} canvasHandler
+     * @param {drawing.Drawing} drawing
      * @param {String} color
      */
-    this.Layer = function (img, canvasHandler, color, preaddedcanvas, cantainer) {
-        image = img;
+    this.Layer = function (drawing, preaddedcanvas, cantainer) {
         if(preaddedcanvas){
             me.canvas = preaddedcanvas;
-        }else {
-            if(cantainer){
-                me.canvas = $("<canvas></canvas>").appendTo(cantainer);
-            }else{
-                me.canvas = $("<canvas></canvas>").appendTo(image.parent());
-            }
+        }else{
+            me.canvas = $("<canvas></canvas>").appendTo(cantainer);
         }
 
         me.canvas.css({
             position: 'absolute',
-            left: image.position().left,
-            top: image.position().top
+            left: 0,
+            top: 0
         });
 
-        me.canvas.attr('width', image.width());
-        me.canvas.attr('height', image.height());
+        me.canvas.attr('width', drawing.settings.width);
+        me.canvas.attr('height', drawing.settings.height);
         me.context = me.canvas.get(0).getContext("2d");
 
         //events
-        me.canvas.mousedown(canvasHandler.mousedown);
-        me.canvas.mouseleave(canvasHandler.mouseleave);
-        me.canvas.mouseup(canvasHandler.stopdrawing);
-        me.canvas.dblclick(canvasHandler.enableDisableFreeHand);
-        me.context.strokeStyle = color;
-        me.context.fillStyle = color;
-        me.canvas.click(canvasHandler.click);
-        canvasHandler.onResize(me.reposition);
+        me.canvas.mousedown(drawing.mousedown);
+        me.canvas.mouseleave(drawing.mouseleave);
+        me.canvas.mouseup(drawing.stopdrawing);
+        me.canvas.dblclick(drawing.enableDisableFreeHand);
+        me.canvas.click(drawing.click);
+        drawing.onResize(me.reposition);
     };
 
     /**
@@ -69,10 +62,7 @@ drawing.layer.Layer = function (me) {
     };
 
     this.reposition = function () {
-        me.canvas.css({
-            left: image.position().left,
-            top: image.position().top
-        });
+
     };
 
     /**

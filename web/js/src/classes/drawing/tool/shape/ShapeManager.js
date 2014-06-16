@@ -33,13 +33,12 @@ drawing.tool.shape.ShapeManager = function (me) {
      * various shape tools
      * @type {Object<drawing.tool.shape.Shape>}
      */
-    var shapeList, masterLayer, secondaryLayer;
+    var shapeList, drawing;
 
-    this.ShapeManager = function (ml, sl) {
+    this.ShapeManager = function (drw) {
         shapeList = {};
-        masterLayer = ml;
-        secondaryLayer = sl;
         //coming
+        drawing = drw;
         shapeList[me.MODE_SELECT_OBJECT] = 'object_selector';
         shapeList[me.MODE_SELECT_AREA]       = 'select_area';
         shapeList[me.MAGIC_WAND]         = 'magic_wand';
@@ -62,7 +61,7 @@ drawing.tool.shape.ShapeManager = function (me) {
         var shape = shapeList[type];
         if (typeof shape === 'string') {
             fm.Include(shape, function(){
-                shapeList[type]  = new (fm.isExist(shape))(masterLayer, secondaryLayer);
+                shapeList[type]  = new (fm.isExist(shape))(drawing.layerManager);
                 shapeList[type].setStrokeWidth(me.package.Shape.strokeWidth);
                 cb(shapeList[type]);
             });

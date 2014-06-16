@@ -22,13 +22,11 @@ drawing.tool.ToolManager = function (me) {
      * various tools
      * @type {Object<drawing.tool.Tool>}
      */
-    var toolList, masterLayer, image, color;
+    var toolList, drawing;
 
-    this.ToolManager = function (ml, img, c) {
+    this.ToolManager = function (drw) {
         toolList = {};
-        masterLayer = ml;
-        image = img;
-        color = c;
+        drawing = drw;
         toolList[me.MODE_FILLER] = "drawing.tool.Filling";// new Filling(masterLayer, image, color);
         toolList[me.MODE_ERASER] = "drawing.tool.Eraser"; // new Eraser(masterLayer);
         toolList[me.MODE_PENCIL] = "drawing.tool.Pencil"; // new Pencil(masterLayer);
@@ -38,7 +36,7 @@ drawing.tool.ToolManager = function (me) {
         var toolClass = toolList[type];
         if (typeof toolClass === 'string') {
             fm.Include(toolClass, function(){
-                toolList[type] = new (fm.isExist(toolClass))(masterLayer, image, color);
+                toolList[type] = new (fm.isExist(toolClass))(drawing.layerManager);
                 cb(toolList[type]);
             });
             return toolClass;

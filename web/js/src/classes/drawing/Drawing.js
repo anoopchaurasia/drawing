@@ -8,6 +8,7 @@ fm.Import("drawing.layer.Layer");
 fm.Import("drawing.Contrast");
 fm.Import("drawing.tool.shape.ShapeManager");
 fm.Import("drawing.tool.ToolManager");
+fm.Import("drawing.setting.Settings");
 fm.Import("drawing.layer.LayerManager");
 fm.Class("Drawing");
 
@@ -15,7 +16,7 @@ fm.Class("Drawing");
  * Drawing
  * @class create Drawing
  */
-drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, ToolManager, LayerManager) {
+drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, ToolManager, Settings, LayerManager) {
 
     "use strict";
 
@@ -53,14 +54,6 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
      */
     var mouseDownPos;
 
-
-
-    /**
-     * Annotation tool instance
-     * @type {file.FileTagging}
-     */
-    var fileTagging;
-
     /**
      * Image over which canvas is get rendered
      * @type {jQueryImage}
@@ -72,12 +65,6 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
      * @type {drawing.Layer}
      */
     var selectedLayer;
-
-    /**
-     * image offset;
-     * @type {Object}
-     */
-    var offset;
 
     /**
      * true if mouse left canvas area
@@ -99,8 +86,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
      *  @type {drawing.tool.shape.ShapeManager}
      */
 
-    this.Drawing = function (img, files, color) {
-        image = img;
+    this.Drawing = function () {
         userActions = new UserActionList();
         resizeCallbacks = [];
         isMouseDown = false;
@@ -116,34 +102,18 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         $(document).on('mouseup', stopdrawing);
         $(window).on('resize', this.onResize);
         $(document).bind('paste', onPaste);
-        $("#imagecontainer")
-            .width(image.width())
-            .height(image.height())
-            .resizable({
-                stop: function(){
-                    var width = $(this).width();
-                    var height = $(this).height();
-                    me.layerManager.getSelectedLayer().changeSize(width, height);
-                    me.layerManager.frontLayer.changeSize(width, height);
-                    me.layerManager.imageLayer.changeSize(width, height);
-                }
-            });
-        offset = image.offset();
-        image.css('visibility','hidden');
+
         // contrast = new Contrast(imageLayer, image);
         // contrast.setContrast();
-       
-        me.layerManager = new LayerManager(image, color, me);
+
+        me.settings = new Settings();
+        
+        me.layerManager = new LayerManager(me);
         //shape manager
-        me.shapeManager = new ShapeManager(me.layerManager, me.layerManager.frontLayer);
-
+        me.shapeManager = new ShapeManager(me);
         //Tool manager
-        me.toolManager = new ToolManager(me.layerManager, image, color);
+        me.toolManager = new ToolManager(me);
 
-        //tools
-        fileTagging =  {};
-        fileTagging.hideAllTags = fileTagging.hideAllTags || function noop(){};
-        me.currentTool = fileTagging;
     };
 
     /**
@@ -158,9 +128,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         }
         var canvas = me.layerManager.getSelectedLayer().canvas;
         if ("" + me.currentTool === me.MODE_FILLER) {
-            me.currentTool.fill(e.pageX - offset.left, e.pageY - offset.top);
-        } else if (fileTagging === me.currentTool) {
-            image.trigger('click', [e]);
+            me.currentTool.fill(e.pageX - me.settings.offset.left, e.pageY - me.settings.offset.top);
         } else if (typeof me.currentTool.onClick === 'function') {
             me.currentTool.onClick(e);
         }
@@ -196,7 +164,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
             x: e.pageX,
             y: e.pageY
         };
-        offset = image.offset();
+        var offset = me.settings.offset;
         if (me.currentTool.start) {
             me.currentTool.start(e.pageX - offset.left, e.pageY - offset.top);
         }
@@ -217,7 +185,8 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         }
         e.preventDefault();
 
-        var x = e.pageX - offset.left,
+        var offset = me.settings.offset,
+            x = e.pageX - offset.left,
             y = e.pageY - offset.top;
 
         if (mouseleft) {
@@ -325,7 +294,6 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         }
         me.toolManager.getTool(type, function(tool){
             me.currentTool = tool;
-            fileTagging.hideAllTags();
             me.currentTool.setCursor();
         });
     };
@@ -342,7 +310,6 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
             me.currentTool = shape;    
             me.currentTool.setFill(false);
             me.currentTool.fill();
-            fileTagging.hideAllTags();
             me.currentTool.setCursor();
         });
     };
@@ -350,17 +317,6 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
     this.setModeContrast = function () {
         me.currentTool = contrast;
         log(me.currentTool)
-        fileTagging.hideAllTags();
-    };
-
-    /**
-     * enable annotation
-     * @return {Undefined}
-     */
-    this.enableAnnotation = function () {
-        fileTagging.showAllTags();
-        me.currentTool = fileTagging;
-        me.layerManager.getSelectedLayer().canvas.css("cursor", "");
     };
 
     /**

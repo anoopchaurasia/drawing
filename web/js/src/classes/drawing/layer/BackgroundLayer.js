@@ -6,9 +6,9 @@ fm.Class("BackgroundLayer", "drawing.layer.Layer");
  */
 drawing.layer.BackgroundLayer = function (base, me) {
    this.setMe=function(_me){me=_me;}
-    this.BackgroundLayer = function(image, canvas, color, canvasCont){
-        me.base(image, canvas, color, canvasCont);
-        this.changeSize(image.width(), image.height());
+    this.BackgroundLayer = function(drawing, canvasCont){
+        me.base(drawing, canvasCont);
+        this.changeSize(drawing.settings.width, drawing.settings.height);
     };
 
     this.changeSize = function (width, height) {

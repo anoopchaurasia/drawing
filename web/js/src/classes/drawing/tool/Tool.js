@@ -15,10 +15,12 @@ drawing.tool.Tool = function (me, Layer) {
         me = _me;
     };
 
+    var layer;
+
     /**
      * @type {drawing.Layer}
      */
-    var layer;
+    var layerManager;
 
     /**
      * @param {drawing.Layer} l

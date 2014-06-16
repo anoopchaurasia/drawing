@@ -90,20 +90,31 @@
             </div>
         </div>
         <div
-            style="box-flex: 1"
-            id="imagecontainer">
-            <img
-                id="image" />
-            <canvas id="background-canvas"></canvas>
-            <canvas id="image-canvas"></canvas>
-            <div id="layerContainer">               
+            style="box-flex: 1; -webkit-box-flex: 1;">
+            <div
+                id="container">
+                <canvas id="background-canvas"></canvas>
+                <div id="layerContainer">               
+                </div>
+                <canvas id="front-canvas"></canvas>
+                <div style="clear:both;"></div>
             </div>
-            <canvas id="front-canvas"></canvas>
         </div>
         <div class="left header">
             <div id="layerController">
                 <div class="head" ng-click="drawing.layerManager.addLayer()">
                     + add
+                </div>
+                <div 
+                    class="head">
+                    
+                    <label>
+                        <san>+ add image</span>
+                        <input 
+                            class="add-image"
+                            add-image 
+                            type="file">
+                    </label>
                 </div>
                 <div
                     ng-class="{selected: drawing.layerManager.isSelected(layer)}"
