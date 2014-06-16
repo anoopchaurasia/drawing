@@ -20,6 +20,12 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 		me.layerList = [me.backgroudLayer];
 	};
 
+    this.onLayoutChange = function (width, height) {
+        me.layerList.forEach(function (layer) {
+            layer.changeSize(width, height);
+        });
+    };
+
 	this.getSelectedLayer = function () {
 		return me.selectedLayer;	
 	};
@@ -31,7 +37,7 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 
     this.addImageLayer = function(data){
         me.addLayer();
-        me.selectedLayer.setImageDataURL(data);
+        me.selectedLayer.setImageDataURL(data, me.onLayoutChange);
     };
 
     this.selectLayer = function(layer){

@@ -140,13 +140,14 @@ drawing.layer.Layer = function (me) {
      * set image data to canvas
      * @param {Undefined} imagedata
      */
-    this.setImageDataURL = function (imagedata) {
+    this.setImageDataURL = function (imagedata, sizeCB) {
         if (!imagedata) {
             return;
         }
         var image = new Image();
         image.src = imagedata;
         image.onload = function () {
+            sizeCB && sizeCB(image.width, image.height);
             me.context.drawImage(image, 0, 0);
         };
     };
