@@ -15,6 +15,7 @@ drawing.tool.ToolManager = function (me) {
         Static.Const.MODE_FILLER = 'filler';
         Static.Const.MODE_ERASER = 'eraser';
         Static.Const.MODE_PENCIL = 'pencil';
+        Static.Const.MODE_TEXT = 'text_input';
     }
 
 
@@ -27,6 +28,7 @@ drawing.tool.ToolManager = function (me) {
     this.ToolManager = function (drw) {
         toolList = {};
         drawing = drw;
+        toolList[me.MODE_TEXT]  = 'drawing.tool.Text';
         toolList[me.MODE_FILLER] = "drawing.tool.Filling";// new Filling(masterLayer, image, color);
         toolList[me.MODE_ERASER] = "drawing.tool.Eraser"; // new Eraser(masterLayer);
         toolList[me.MODE_PENCIL] = "drawing.tool.Pencil"; // new Pencil(masterLayer);

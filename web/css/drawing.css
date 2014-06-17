@@ -139,7 +139,9 @@ body{
     height: 100%;
     border: 1px solid #ccc;
     border-radius: 2px;
-    background-color: #f5f6f7;
+    position: absolute;
+    top: 2px;
+    left: 2px;
 }
 #header >div >div{
     float: left;
@@ -150,7 +152,7 @@ body{
 
 #header >div {
     border-right: 1px solid #ccc;
-    height: 100%;
+    background-color: #fff;
 }
 
 .canvas-text .draggable{
@@ -199,6 +201,9 @@ body{
 .left.header{
     position: relative;
     width: 100px;
+    position: absolute;
+    top: 2px;
+    right: 2px;
 }
 
 .selected{

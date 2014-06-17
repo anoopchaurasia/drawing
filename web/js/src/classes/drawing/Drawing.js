@@ -127,8 +127,8 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
             return false;
         }
         var canvas = me.layerManager.getSelectedLayer().canvas;
-        if ("" + me.currentTool === me.MODE_FILLER) {
-            me.currentTool.fill(e.pageX - me.settings.offset.left, e.pageY - me.settings.offset.top);
+        if ("" + me.currentTool === "filler") {
+            me.currentTool.fill(e.pageX - me.settings.offset.left, e.pageY - me.settings.offset.top, me.settings.selectedColor);
         } else if (typeof me.currentTool.onClick === 'function') {
             me.currentTool.onClick(e);
         }
@@ -350,6 +350,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
      */
     this.colorChanged = function (color) {
         this.currentTool.setStrokeColor(color);
+        me.settings.selectedColor = color;
     };
 
     this.fillColorChanged =function(color){

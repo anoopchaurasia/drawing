@@ -15,116 +15,52 @@
 
 </head>
 <body>
-    <div
-        ng-controller="mainController"
-        style="display:-webkit-box;">
+    <div ng-controller="mainController">
         <div
-            id="header">
-            <div
-                style="width: 100px; float: left;">
-                <div
-                    ng-repeat="(index,data) in drawing.getToolList()" >
-                    <span
-                        ng-class="index"
-                        class="tool"
-                        ng-click="drawing.setTool(index)"
-                        >
-                    </span>
-                </div>
-            </div>
-            <div
-                style="width: 100px; float: left; background:#fff;">
-                <div
-                    ng-repeat="(index,data) in drawing.getShapeList()" >
-                    <span
-                        ng-click="drawing.setShape(index)"
-                        class="tool"
-                        ng-class="index">
-                    </span>
-                </div>
-            </div>
-            <div
-                style="float:left">
-                <div
-                    ng-repeat="width in drawing.strokeWidths"
-                    ng-style="{height: width}"
-                    ng-click="drawing.setStrokeWidth(width)"
-                    style="width: 50px; background: #000; float: none;margin-top: 2px; padding: 0">
-
-                </div>
-
-            </div>
-            <div
-                style="float:left">
-                <div
-                    ng-style="{background: drawing.currentTool.strokeColor}"
-                    ng-click="setSelectedColorType('foreground')"
-                    ng-class="getSelectedClass('foreground')"
-                    style="width: 20px; height: 20px; margin-top: 2px;">
-
-                </div>
-                <div
-                    ng-style="{background: drawing.currentTool.fillColor}"
-                    ng-click="setSelectedColorType('background')"
-                    ng-class="getSelectedClass('background')"
-                    style="width: 20px; height: 20px; margin-top: 2px;">
-
-                </div>
-            </div>
-            <div
-                style="float:left">
-                <div
-                    ng-repeat="color in drawing.colors"
-                    ng-style="{background: color}"
-                    ng-click="colorChanged(color)"
-                    style="width: 20px; height: 20px; margin-top: 2px;">
-
-                </div>
-
-            </div>
-            <div
-                style="float:left">
-                <div
-                    ng-click="drawing.currentTool.fill()">
-                </div>
-            </div>
+            style="height: 20px">
+            <span class="head" ng-click="drawing.layerManager.addLayer()">
+                + add
+            </span>
+            <span 
+                class="head">
+                
+                <label>
+                    <span>+ add image</span>
+                    <input 
+                        class="add-image"
+                        add-image 
+                        type="file">
+                </label>
+            </span>
         </div>
         <div
-            style="box-flex: 1; -webkit-box-flex: 1;">
+            style="position: relative;">
             <div
-                id="container">
-                <canvas id="background-canvas"></canvas>
-                <div id="layerContainer">               
-                </div>
-                <canvas id="front-canvas"></canvas>
-                <div style="clear:both;"></div>
+                ng-include="'/templates/tools.html'"
+                id="header">
             </div>
-        </div>
-        <div class="left header">
-            <div id="layerController">
-                <div class="head" ng-click="drawing.layerManager.addLayer()">
-                    + add
-                </div>
-                <div 
-                    class="head">
-                    
-                    <label>
-                        <san>+ add image</span>
-                        <input 
-                            class="add-image"
-                            add-image 
-                            type="file">
-                    </label>
-                </div>
+            <div
+                style="margin-left:105px;">
                 <div
-                    ng-class="{selected: drawing.layerManager.isSelected(layer)}"
-                    ng-click="drawing.layerManager.selectLayer(layer)" 
-                    ng-repeat="layer in drawing.layerManager.layerList">
-                    <span>anoop</span>
+                    id="container">
+                    <canvas id="background-canvas"></canvas>
+                    <div id="layerContainer">               
+                    </div>
+                    <canvas id="front-canvas"></canvas>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+            <div class="left header">
+                <div id="layerController">
+                    <div
+                        ng-class="{selected: drawing.layerManager.isSelected(layer)}"
+                        ng-click="drawing.layerManager.selectLayer(layer)" 
+                        ng-repeat="layer in drawing.layerManager.layerList">
+                        <span>{{layer.name}}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </body>
 </html>

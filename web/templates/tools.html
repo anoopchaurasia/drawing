@@ -1,0 +1,51 @@
+
+<div>
+    <div
+        ng-repeat="(index,data) in drawing.getToolList()" >
+        <span
+            ng-class="index"
+            class="tool"
+            ng-click="drawing.setTool(index)"
+            >
+        </span>
+    </div>
+</div>
+<div>
+    <div
+        ng-repeat="(index,data) in drawing.getShapeList()" >
+        <span
+            ng-click="drawing.setShape(index)"
+            class="tool"
+            ng-class="index">
+        </span>
+    </div>
+</div>
+<div
+    style="float:left">
+    <div 
+    	style="width: 90%; margin: 10px 5%; height: 30px;"
+    	ng-style="{'background-color': drawing.settings.selectedColor}">
+    </div>
+    <div
+        ng-repeat="color in drawing.colors"
+        ng-style="{background: color}"
+        ng-click="drawing.colorChanged(color)"
+        style="width: 20px; height: 20px; margin-top: 2px;">
+    </div>
+
+</div>
+<div
+    style="float:left">
+    <div
+        ng-click="drawing.currentTool.fill()">
+    </div>
+</div>
+<div
+    style="float:left;">
+    <div
+        ng-repeat="width in drawing.strokeWidths"
+        ng-style="{height: width}"
+        ng-click="drawing.setStrokeWidth(width)"
+        style="width: 50px; background: #000; float: none;margin-top: 2px; padding: 0">
+    </div>
+</div>

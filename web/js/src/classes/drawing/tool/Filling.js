@@ -8,15 +8,11 @@ drawing.tool.Filling = function (base, me) {
         me = _me
     };
 
-    var canvasWidth, canvasHeight, outlineLayerData, colorLayerData, clickedColorR, clickedColorG, clickedColorB, layerManager;
+    var canvasWidth, outlineLayer, canvasHeight, outlineLayerData, clickedColorR, clickedColorG, clickedColorB, layerManager;
     var newColorR, newColorG, newColorB;
-    this.Filling = function (ml, image, color) {
+    this.Filling = function (ml) {
         base(ml);
         layerManager = ml;
-        canvasWidth = layerManager.getSelectedLayer().canvas[0].width;
-        canvasHeight = layerManager.getSelectedLayer().canvas[0].height;
-        outlineLayerData = layerManager.getSelectedLayer().getImageData(image).data;
-        this.setStrokeColor(color);
     };
 
 
@@ -30,87 +26,39 @@ drawing.tool.Filling = function (base, me) {
             return false;
         }
 
-        r = colorLayerData.data[pixelPos];
-        g = colorLayerData.data[pixelPos + 1];
-        b = colorLayerData.data[pixelPos + 2];
-
-        if (r + g + b === 0) return true;
-
-        // If current pixel matches the new color
-        if (r == newColorR && g == newColorG && b == newColorB) {
-            return false;
-        }
-
         return true;
     }
 
-    this.fill = function (startX, startY) {
-
+    this.fill = function (startX, startY, color) {
+        var layer = layerManager.getSelectedLayer();
         startX = Math.floor(startX);
         startY = Math.floor(startY);
-        colorLayerData = layerManager.getSelectedLayer().context.getImageData(0, 0, canvasWidth, canvasHeight);
+        canvasWidth = layer.canvas[0].width;
+        canvasHeight = layer.canvas[0].height;
+        outlineLayer = layer.getData();
+        outlineLayerData = outlineLayer.data;
+        
+        if(layer.instanceOf(drawing.layer.BackgroundLayer)){
+            for (var i = 0, len = outlineLayerData.length; i < len; i+=4){
+                colorPixel(outlineLayerData, i);
+            }
+            layer.context.putImageData(outlineLayer, 0, 0);
+            layer.context.stroke();
+            return ;
+        }
+
         var pixelPos = (startY * canvasWidth + startX) * 4;
         clickedColorR = outlineLayerData[pixelPos + 0];
         clickedColorG = outlineLayerData[pixelPos + 1];
         clickedColorB = outlineLayerData[pixelPos + 2];
+        this.setStrokeColor(color);
         var pixelStack = [
             [startX, startY]
         ];
-       // me.floodFill(pixelStack);
-        me.toolFiller(layerManager.getSelectedLayer().context, canvasWidth, canvasHeight, startX, startY, {a: 255,
-            r:clickedColorR, g: clickedColorG, b: clickedColorB}, 10);
+        me.floodFill(pixelStack);
 
     };
 
-    var completed = [];
-
-
-    this.toolFiller = function(context, W, H, x, y, color_to, sensitivity){
-        var img = context.getImageData(0, 0, W, H);
-        var imgData = img.data;
-        var k = ((y * (img.width * 4)) + (x * 4));
-        var dx = [ 0, -1, +1,  0];
-        var dy = [-1,  0,  0, +1];
-        var color_from = {
-            r: imgData[k+0],
-            g: imgData[k+1],
-            b: imgData[k+2],
-            a: imgData[k+3],
-            }
-        if(color_from.r == color_to.r &&
-          color_from.g == color_to.g &&
-          color_from.b == color_to.b &&
-          color_from.a == color_to.a)
-            return false;
-        var stack = [];
-        stack.push(x);
-        stack.push(y);
-        while (stack.length > 0){
-            var curPointY = stack.pop();
-            var curPointX = stack.pop();
-            for (var i = 0; i < 4; i++){
-                var nextPointX = curPointX + dx[i];
-                var nextPointY = curPointY + dy[i];
-                if (nextPointX < 0 || nextPointY < 0 || nextPointX >= W || nextPointY >= H)
-                    continue;
-                var k = (nextPointY * W + nextPointX) * 4;
-                //check
-                if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
-                  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
-                  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
-                  Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
-                    //fill pixel
-                    imgData[k+0] = color_to.r; //r
-                    imgData[k+1] = color_to.g; //g
-                    imgData[k+2] = color_to.b; //b
-                    imgData[k+3] = color_to.a; //a
-                    stack.push(nextPointX);
-                    stack.push(nextPointY);
-                    }
-                }
-            }
-        context.putImageData(img, 0, 0);
-    };
     this.floodFill = function (pixelStack) {
         var newPos, x, y, pixelPos, reachLeft, reachRight;
         var drawingBoundLeft = 0;
@@ -138,7 +86,7 @@ drawing.tool.Filling = function (base, me) {
             reachRight = false;
             // Go down as long as the color matches and in inside the canvas
             while (y++ < drawingBoundBottom && matchClickedColor(pixelPos)) {
-                colorPixel(pixelPos);
+                colorPixel(outlineLayerData, pixelPos);
                 //console.log("COLOR: " + (x - drawingAreaX - 2) + "," + (y - drawingAreaY - 2));
 
                 if (x > drawingBoundLeft) {
@@ -167,39 +115,17 @@ drawing.tool.Filling = function (base, me) {
                 pixelPos += canvasWidth * 4;
             }
         }
-        while (stack.length > 0){
-            var curPointY = stack.pop();
-            var curPointX = stack.pop();
-            for (var i = 0; i < 4; i++){
-                var nextPointX = curPointX + dx[i];
-                var nextPointY = curPointY + dy[i];
-                if (nextPointX < 0 || nextPointY < 0 || nextPointX >= W || nextPointY >= H)
-                    continue;
-                var k = (nextPointY * W + nextPointX) * 4;
-                //check
-                if(Math.abs(imgData[k+0] - color_from.r) <= sensitivity &&
-                  Math.abs(imgData[k+1] - color_from.g) <= sensitivity &&
-                  Math.abs(imgData[k+2] - color_from.b) <= sensitivity &&
-                  Math.abs(imgData[k+3] - color_from.a) <= sensitivity){
-                    //fill pixel
-                    imgData[k+0] = color_to.r; //r
-                    imgData[k+1] = color_to.g; //g
-                    imgData[k+2] = color_to.b; //b
-                    imgData[k+3] = color_to.a; //a
-                    stack.push(nextPointX);
-                    stack.push(nextPointY);
-                }
-            }
-        }
-        layerManager.getSelectedLayer().context.putImageData(colorLayerData, 0, 0);
+        layerManager.getSelectedLayer().context.putImageData(outlineLayer, 0, 0);
         layerManager.getSelectedLayer().context.stroke();
     }
 
-    function colorPixel(pixelPos) {
-        colorLayerData.data[pixelPos] = newColorR;
-        colorLayerData.data[pixelPos + 1] = newColorG;
-        colorLayerData.data[pixelPos + 2] = newColorB;
-        colorLayerData.data[pixelPos + 3] = 255;
+    var completed = [];
+
+    function colorPixel(outlineLayerData, pixelPos) {
+        outlineLayerData[pixelPos] = newColorR;
+        outlineLayerData[pixelPos + 1] = newColorG;
+        outlineLayerData[pixelPos + 2] = newColorB;
+        outlineLayerData[pixelPos + 3] = 255;
     }
 
     this.toString = function () {

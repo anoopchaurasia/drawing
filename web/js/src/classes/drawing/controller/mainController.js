@@ -3,7 +3,7 @@ function mainController($scope, $rootScope) {
 	$rootScope.drawing = new drawing.Drawing();
 
 	this.colorChanged = function(color){
-       
+       $scope.drawing.colorChanged(color);
     };
 
     this.getSelectedClass = function(type){

@@ -16,7 +16,7 @@ drawing.tool.Text = function (base, me) {
     /**
      * @type {drawing.Layer}
      */
-    var layer;
+    var layerManager;
 
     /**
      * constructor
@@ -27,24 +27,24 @@ drawing.tool.Text = function (base, me) {
     this.Text = function (l) {
         base(l);
         isWriting = false;
-        layer = l;
+        layerManager = l;
     };
 
     this.start = function (x, y) {
-        var offset = layer.canvas.offset();
+        var offset = layerManager.selectedLayer.canvas.offset();
         if (isWriting) {
-            layer.context.font = "";
+            layerManager.selectedLayer.context.font = "";
             var textarea = element.children();
-            layer.context.textBaseline = "top";
-            layer.context.textAlign = "left";
+            layerManager.selectedLayer.context.textBaseline = "top";
+            layerManager.selectedLayer.context.textAlign = "left";
             var lineheight = parseInt(textarea.css('font-size')) + 5;
-            layer.context.font = textarea.css('font-size') + "  " + textarea.css('font-family');
+            layerManager.selectedLayer.context.font = textarea.css('font-size') + "  " + textarea.css('font-family');
             var values = textarea.val().split("\n");
             var textoffset = textarea.offset();
             var x = textoffset.left - offset.left;
             var y = textoffset.top - offset.top;
             values.forEach(function (value, index) {
-                layer.context.fillText(
+                layerManager.selectedLayer.context.fillText(
                     value,
                     x + parseInt(textarea.css('padding-left')) + 1,
                     y + (index) * lineheight + parseInt(textarea.css('padding-top')) + 3
@@ -62,10 +62,10 @@ drawing.tool.Text = function (base, me) {
             css: {
                 left: x + offset.left,
                 top: offset.top + y,
-                color: layer.context.strokeStyle
+                color: layerManager.selectedLayer.context.strokeStyle
             },
             html: "<textarea></textarea>"
-        }).appendTo(layer.canvas.parent());
+        }).appendTo(layerManager.selectedLayer.canvas.parent());
         element.children().focus();
         element.draggable();
         me.base.start(x, y);
@@ -92,6 +92,6 @@ drawing.tool.Text = function (base, me) {
      * set  cursor image based on selected size
      */
     this.setCursor = function () {
-        layer.canvas.css("cursor", "url(/images/cursor/pencil.cur), pointer");
+        layerManager.selectedLayer.canvas.css("cursor", "url(/images/cursor/pencil.cur), pointer");
     };
 };

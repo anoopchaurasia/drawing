@@ -23,7 +23,7 @@ drawing.layer.Layer = function (me) {
      * @param {drawing.Drawing} drawing
      * @param {String} color
      */
-    this.Layer = function (drawing, preaddedcanvas, cantainer) {
+    this.Layer = function (drawing, preaddedcanvas, cantainer, name) {
         if(preaddedcanvas){
             me.canvas = preaddedcanvas;
         }else{
@@ -35,6 +35,8 @@ drawing.layer.Layer = function (me) {
             left: 0,
             top: 0
         });
+
+        me.name = name;
 
         me.canvas.attr('width', drawing.settings.width);
         me.canvas.attr('height', drawing.settings.height);

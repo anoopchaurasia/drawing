@@ -30,13 +30,14 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 		return me.selectedLayer;	
 	};
 
-    this.addLayer = function(){
-        me.layerList.push(new Layer(drawing, undefined, $("#layerContainer")));
+    this.addLayer = function(name){
+        name = name || "Layer " + me.layerList.length;
+        me.layerList.push(new Layer(drawing, undefined, $("#layerContainer"), name));
         me.selectedLayer = me.layerList[me.layerList.length - 1];
     };
 
-    this.addImageLayer = function(data){
-        me.addLayer();
+    this.addImageLayer = function(data, name){
+        me.addLayer(name);
         me.selectedLayer.setImageDataURL(data, me.onLayoutChange);
     };
 

@@ -5,7 +5,7 @@ angular.module('app', [])
 			element.change(function(e, data){
 			    var url = window.URL || window.webkitURL
 			    , src = url.createObjectURL(e.target.files[0]);
-			    scope.drawing.layerManager.addImageLayer(src);
+			    scope.drawing.layerManager.addImageLayer(src, e.target.files[0].name);
 			    scope.$apply();
 			});
 		}
