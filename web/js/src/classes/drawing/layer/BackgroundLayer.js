@@ -4,9 +4,12 @@ fm.Class("BackgroundLayer", "drawing.layer.Layer");
 /**
  *@class create canvas BackgroundLayer
  */
-drawing.layer.BackgroundLayer = function (base, me) {
-   this.setMe=function(_me){me=_me;}
+drawing.layer.BackgroundLayer = function (base, me, Layer) {
+    this.setMe=function(_me){me=_me;}
+    
+    var bottomLayer;
     this.BackgroundLayer = function(drawing, canvasCont){
+        bottomLayer = new Layer(drawing, canvasCont.prev(), undefined, "no name");
         me.base(drawing, canvasCont, undefined, "Background");
         this.changeSize(drawing.settings.width, drawing.settings.height);
     };
@@ -18,8 +21,8 @@ drawing.layer.BackgroundLayer = function (base, me) {
 
     this.fill = function(gap){
         var fill;
-        var WIDTH = me.canvas[0].width;
-        var HEIGHT = me.canvas[0].height;
+        var WIDTH = bottomLayer.canvas[0].width;
+        var HEIGHT = bottomLayer.canvas[0].height;
 
         for(var i=0; i<WIDTH; i=i+gap){
             if(i%(gap*2) == 0){
@@ -31,8 +34,8 @@ drawing.layer.BackgroundLayer = function (base, me) {
 
             for(var j=0; j<HEIGHT; j=j+gap){
                 if(fill==true){
-                    me.context.fillStyle = '#eeeeee';
-                    me.context.fillRect(i, j, gap, gap);
+                    bottomLayer.context.fillStyle = '#eeeeee';
+                    bottomLayer.context.fillRect(i, j, gap, gap);
                     fill = false;
                 }
                 else{

@@ -50,8 +50,8 @@ drawing.tool.shape.ShapeManager = function (me) {
         shapeList[me.MODE_CONTRAST]      = 'contrast';
         shapeList[me.MODE_LINE] = "drawing.tool.shape.Line"; // new Line(masterLayer, secondaryLayer);
         shapeList[me.MODE_CIRCLE] = "drawing.tool.shape.Circle"; // new Circle(masterLayer, secondaryLayer);
-        shapeList[me.MODE_RECTANGLE] = "drawing.tool.shape.Rotate"; // new Rectangle(masterLayer, secondaryLayer);
-        shapeList[me.MODE_ARROW_LINE] = "drawing.tool.shape.Rectangle"; //new ArrowLine(masterLayer, secondaryLayer);
+        shapeList[me.MODE_ARROW_LINE] = "drawing.tool.shape.Rotate"; // new Rectangle(masterLayer, secondaryLayer);
+        shapeList[me.MODE_RECTANGLE] = "drawing.tool.shape.Rectangle"; //new ArrowLine(masterLayer, secondaryLayer);
         shapeList[me.MODE_ROTATE] = "drawing.tool.shape.ArrowLine"; //new Rotate(masterLayer, secondaryLayer);
     };
 

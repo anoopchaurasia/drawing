@@ -110,12 +110,17 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      * @param  {jHelper} helper
      */
     function onDrag (e, helper) {
-        var xChange = helper.originalPosition.left - helper.position.left;
-        var yChange = helper.originalPosition.top - helper.position.top;
-        shape.currentStartPoint.x -= xChange - lastChangeX;
-        shape.currentStartPoint.y -= yChange - lastChangeY;
-        reDrawAfterDragREsize(xChange, yChange );
+        
+        var startPoint = {
+            x: helper.position.left - offset.left,
+            y: helper.position.top - offset.top 
+        },
+        endPoint = {
+            x: startPoint.x + (shape.currentEndPoint.x - shape.currentStartPoint.x),
+            y: startPoint.y + (shape.currentEndPoint.y - shape.currentStartPoint.y)
+        };
 
+        reDrawAfterDragREsize(startPoint, endPoint);
     }
 
     /**
@@ -123,10 +128,9 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      * @param  {Float} xChange
      * @param  {Float} yChange
      */
-     function reDrawAfterDragREsize(xChange, yChange ){
-        shape.draw(shape.currentEndPoint.x - (xChange - lastChangeX), shape.currentEndPoint.y - (yChange - lastChangeY));
-        lastChangeX = xChange;
-        lastChangeY = yChange;
+     function reDrawAfterDragREsize(startPoint, endPoint){
+        shape.currentStartPoint = startPoint;
+        shape.draw(endPoint.x, endPoint.y);
     }
 
     /**
@@ -135,9 +139,16 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      * @param  {jHelper} helper
      */
     function onResize (e, helper){
-        var xChange = helper.originalSize.width - helper.size.width;
-        var yChange = helper.originalSize.height - helper.size.height;
-        reDrawAfterDragREsize(xChange, yChange );
+        var startPoint = {
+            x: helper.position.left - offset.left,
+            y: helper.position.top - offset.top 
+        },
+        endPoint = {
+            x: startPoint.x + helper.size.width,
+            y: startPoint.y + helper.size.height
+        };
+
+        reDrawAfterDragREsize(startPoint, endPoint);
     }
 
     function onIconDrag(e, helper) {
@@ -179,6 +190,7 @@ drawing.tool.shape.ShapeOverlay = function (me) {
         element.resizable({
             start: dragOrResizeStart,
             resize: onResize,
+            handles: 'all',
             stop: onDragOrResizeStop
         });
         element.on('keyup', function (e) {

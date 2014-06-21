@@ -16,7 +16,7 @@ drawing.tool.Pencil = function (base, me) {
     /**
      * @type {drawing.Layer}
      */
-    var layer;
+    var layerManager;
 
     /**
      * constructor
@@ -24,7 +24,7 @@ drawing.tool.Pencil = function (base, me) {
      */
     this.Pencil = function (l) {
         base(l);
-        layer = l;
+        layerManager = l;
     };
 
 
@@ -35,9 +35,9 @@ drawing.tool.Pencil = function (base, me) {
      * @return {Undefined}
      */
     this.draw = function (x, y) {
-        layer.context.lineWidth = me.strokeWidth;
-        layer.context.lineTo(x, y);
-        layer.context.stroke();
+        layerManager.selectedLayer.context.lineWidth = me.strokeWidth;
+        layerManager.selectedLayer.context.lineTo(x, y);
+        layerManager.selectedLayer.context.stroke();
     };
 
     /**
@@ -52,6 +52,6 @@ drawing.tool.Pencil = function (base, me) {
      * set  cursor image based on selected size
      */
     this.setCursor = function () {
-        layer.canvas.css("cursor", "url(/images/cursor/pencil.cur), pointer");
+        layerManager.selectedLayer.canvas.css("cursor", "url(/images/cursor/pencil.cur), pointer");
     };
 };
