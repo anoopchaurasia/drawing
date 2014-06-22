@@ -37,31 +37,57 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      */
     var shape;
 
-    this.ShapeOverlay = function (os, x, y, parentElement, s) {
+    var posList;
+
+    this.ShapeOverlay = function (os, parentElement, s) {
         shape = s;
+        posList = ["A", "B", "C", "D"];
         offset = os;
+        var position = {
+                left: shape.currentStartPoint.x + offset.left,
+                top: offset.top + shape.currentStartPoint.y
+            };
         element = jQuery("<div></div>", {
-            class: 'canvas-text',
-            // html:   "<span class='draggable top-left'></span>\
-            //         <span class='draggable top-middle'></span>\
-            //         <span class='draggable top-right'></span>\
-            //         <span class='draggable right-middle'></span>\
-            //         <span class='draggable bottom-right'></span>\
-            //         <span class='draggable bottom-middle'></span>\
-            //         <span class='draggable bottom-left'></span>\
-            //         <span class='draggable left-middle'></span>",
-            css: {
-                left: x + offset.left,
-                top: offset.top + y
-            },
-          ///  tabindex: 1,
-            // keyup: function(e){
-            //     if( !e.ctrlKey && !e.shiftKey && !e.altKey && e.which === 46 ){
-            //        // me.getSub().
-            //     }
-            // }
+            class: 'canvas-text',           
+            css: position,
         }).appendTo(parentElement);
+        var size = this.resize(shape.currentEndPoint.x, shape.currentEndPoint.y);
+        position = element.position();
+        position = {
+            left: position.left - offset.left,
+            top: position.top - offset.top
+        };
+        calculatePostion(shape.currentStartPoint, shape.currentEndPoint, position, size);
     };
+
+    var postionSet;
+    function calculatePostion (start, end, position, size) {
+       
+        if(start.x === position.left){
+            if(start.y === position.top){
+                postionSet = {start: "A", end: "C"};
+            }else{
+                postionSet = {start: "B", end: "D"};
+            }
+        }else{
+            if(start.y === position.top){
+                postionSet = {start: "D", end: "B"};
+            }else{
+                postionSet = {start: "C", end: "A"};
+            }
+        }
+    }
+
+    function calculateEdges (position, size) {
+        var temp = {};
+        var left = position.left - offset.left;
+        var top = position.top - offset.top;
+        temp.A = {x: left, y: top};
+        temp.B = {x: left, y: top + size.height };
+        temp.C = {x: left + size.width, y: top + size.height};
+        temp.D = {x: left + size.width, y: top};
+        return temp;
+    }
 
     /**
      * return if current drawing has active overlay
@@ -79,9 +105,11 @@ drawing.tool.shape.ShapeOverlay = function (me) {
     this.resize = function (x, y){
         var negativeX = x - shape.currentStartPoint.x < 0;
         var negativeY = y - shape.currentStartPoint.y < 0;
+        var width = Math.abs(x - shape.currentStartPoint.x);
+        var height = Math.abs(y - shape.currentStartPoint.y);
         element.css({
-            width: Math.abs(x - shape.currentStartPoint.x),
-            height: Math.abs(y - shape.currentStartPoint.y)
+            width: width,
+            height: height
         });
         if (negativeX) {
             element.css({
@@ -93,6 +121,8 @@ drawing.tool.shape.ShapeOverlay = function (me) {
                 top: shape.currentStartPoint.y + offset.top - Math.abs(y - shape.currentStartPoint.y)
             });
         }
+
+        return {width: width, height: height};
     }
 
     /**
@@ -111,14 +141,9 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      */
     function onDrag (e, helper) {
         
-        var startPoint = {
-            x: helper.position.left - offset.left,
-            y: helper.position.top - offset.top 
-        },
-        endPoint = {
-            x: startPoint.x + (shape.currentEndPoint.x - shape.currentStartPoint.x),
-            y: startPoint.y + (shape.currentEndPoint.y - shape.currentStartPoint.y)
-        };
+        var edges = calculateEdges (helper.position, {width: helper.helper.width(), height: helper.helper.height()});
+        var startPoint = edges[postionSet.start];
+        var endPoint = edges[postionSet.end];
 
         reDrawAfterDragREsize(startPoint, endPoint);
     }
@@ -139,15 +164,9 @@ drawing.tool.shape.ShapeOverlay = function (me) {
      * @param  {jHelper} helper
      */
     function onResize (e, helper){
-        var startPoint = {
-            x: helper.position.left - offset.left,
-            y: helper.position.top - offset.top 
-        },
-        endPoint = {
-            x: startPoint.x + helper.size.width,
-            y: startPoint.y + helper.size.height
-        };
-
+        var edges = calculateEdges (helper.position, helper.size);
+        var startPoint = edges[postionSet.start];
+        var endPoint = edges[postionSet.end];
         reDrawAfterDragREsize(startPoint, endPoint);
     }
 

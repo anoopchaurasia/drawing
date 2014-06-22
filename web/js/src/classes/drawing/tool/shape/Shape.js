@@ -47,10 +47,6 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
      * @return {Undefined}
      */
     this.draw = function (x, y) {
-        //return if overlay no longer active
-        if(overlay && !overlay.isActive()){
-            return;
-        }
         layerManager.frontLayer.clear();
         this.base.draw(x, y);
         me.drawShape(x, y, layerManager.frontLayer);
@@ -58,7 +54,6 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
             layerManager.frontLayer.context.fill();
         }
         layerManager.frontLayer.context.stroke();
-        overlay.resize(x, y);
     };
 
     /**
@@ -70,13 +65,11 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
         //On second start call end drawing
         if (overlay && overlay.isActive()) {
             destroyLayer();
-            return;
         }
         layerManager.frontLayer.show();
         layerManager.selectedLayer.context.lineWidth = me.strokeWidth;
         this.base.start(x, y);
         layerManager.frontLayer.setContextProps(layerManager.selectedLayer.getContextProps());
-        overlay = new ShapeOverlay(layerManager.frontLayer.canvas.offset(), x, y, layerManager.frontLayer.canvas.parent(), me);
     };
 
     this.setFill = function (isFill) {
@@ -95,9 +88,10 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
      * end of drawing
      */
     this.end = function () {
-        if( !overlay.isActive() ){
+        if( overlay && overlay.isActive()){
             return;
         }
+        overlay = new ShapeOverlay(layerManager.frontLayer.canvas.offset(), layerManager.frontLayer.canvas.parent(), me);
         overlay.enableDrag();
         overlay.enableResize();
     };
