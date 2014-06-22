@@ -16,6 +16,7 @@ drawing.layer.BackgroundLayer = function (base, me, Layer) {
 
     this.changeSize = function (width, height) {
         me.base.changeSize(width, height);
+        bottomLayer.changeSize(width, height);
         me.fill(10); 
     };
 

@@ -17,13 +17,16 @@ drawing.layer.Layer = function (me) {
      * @type {jImage}
      */
     var image;
+
+    var drawing;
     /**
      * Create a canvas over given image
      * @param {jImage} image
      * @param {drawing.Drawing} drawing
      * @param {String} color
      */
-    this.Layer = function (drawing, preaddedcanvas, cantainer, name) {
+    this.Layer = function (dwn, preaddedcanvas, cantainer, name) {
+        drawing = dwn;
         if(preaddedcanvas){
             me.canvas = preaddedcanvas;
         }else{
@@ -98,11 +101,11 @@ drawing.layer.Layer = function (me) {
         me.canvas.show();
     };
 
-    this.changeSize = function(width, height){
+    this.changeSize = function( ){
         var props = me.getContextProps();
         var data  = me.canvas[0].toDataURL("image/png");
-        me.canvas[0].width = width;
-        me.canvas[0].height = height;
+        me.canvas[0].width = drawing.settings.width;
+        me.canvas[0].height = drawing.settings.height;
         me.setImageDataURL(data);
         me.setContextProps(props);
     };

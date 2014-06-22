@@ -10,7 +10,21 @@ angular.module('app', [])
 			});
 		}
 	}
-}]);
+}])
+.directive('resize', [
+	function () {
+		function linker (scope, element) {
+			element.resizable({
+				resize: function (e, helper) {
+	            	scope.drawing.onLayoutChange(helper.size.width, helper.size.height);
+	        	}
+	        });
+		}
+		return {
+			link: linker
+		}
+	}
+]);
 fm.Include("drawing.Drawing",function(){
     $(document).ready(function(){
         angular.bootstrap(document, ['app']);

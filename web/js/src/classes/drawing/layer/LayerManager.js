@@ -20,10 +20,11 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 		me.layerList = [me.backgroudLayer];
 	};
 
-    this.onLayoutChange = function (width, height) {
+    this.onLayoutChange = function () {
         me.layerList.forEach(function (layer) {
-            layer.changeSize(width, height);
+            layer.changeSize();
         });
+        me.frontLayer.changeSize();
     };
 
 	this.getSelectedLayer = function () {
@@ -38,7 +39,7 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 
     this.addImageLayer = function(data, name){
         me.addLayer(name);
-        me.selectedLayer.setImageDataURL(data, me.onLayoutChange);
+        me.selectedLayer.setImageDataURL(data, drawing.onLayoutChange);
     };
 
     this.selectLayer = function(layer){

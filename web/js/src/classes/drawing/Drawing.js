@@ -116,6 +116,12 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
 
     };
 
+    this.onLayoutChange = function (width, height) {
+        me.settings.width = width;
+        me.settings.height = height;
+        me.layerManager.onLayoutChange(width, height);
+    };
+
     /**
      * Handler of click event on canvas
      * @param  {jEvent} e
