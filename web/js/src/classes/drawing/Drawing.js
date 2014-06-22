@@ -315,7 +315,6 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         me.shapeManager.getShape(type, function(shape){
             me.currentTool = shape;    
             me.currentTool.setFill(false);
-            me.currentTool.fill();
             me.currentTool.setCursor();
         });
     };
