@@ -3,9 +3,11 @@
 <head>
 	<link type="text/css" rel="stylesheet" href="/css/jquery-ui/jquery-ui-1.10.4.custom.css" />
     <link type="text/css" rel="stylesheet" href="/css/drawing.css" />
+    <link type="text/css" rel="stylesheet" href="/css/colorpicker.css" />
     <script type="text/javascript" src="/js/src/lib/jquery.js"></script>
 	<script src="js/src/lib/jquery-ui-1.10.4.custom.js" ></script>
 	<script type="text/javascript" src="/js/src/lib/angular.js"></script>
+    <script type="text/javascript" src="/js/src/lib/colorpicker.js"></script>
     <script type="text/javascript" src="jsfm.js"></script>
     <script>
 		fm.packages.drawing = "/js/src/classes";
@@ -53,6 +55,7 @@
                 </div>
             </div>
             <div class="left header">
+                <div ng-include="'/templates/color-selector.html'"></div>
                 <div id="layerController">
                     <div
                         ng-class="{selected: drawing.layerManager.isSelected(layer)}"

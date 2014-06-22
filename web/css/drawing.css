@@ -26,8 +26,9 @@ body{
 #container{
     position: absolute;
     border: 1px dashed #999;
-    padding: 0 2px 2px 0;
+    padding: 0 1px 1px 0;
     background-color: #fff;
+    box-shadow: #020202 5px 5px 4px
 }
 
 #layerContainer{
@@ -137,7 +138,7 @@ body{
 }
 
 #header {
-    width: 100px;
+    width: 50px;
     height: 100%;
     border: 1px solid #ccc;
     border-radius: 2px;
@@ -214,4 +215,8 @@ body{
 
 .add-image{
     margin-left: -99999px;
+}
+
+#layerController{
+    margin-top: 10px;
 }

@@ -35,6 +35,24 @@ angular.module('app', [])
 			link: linker
 		}
 	}
+])
+.directive('colorpicker', [
+	function () {
+		function linker (scope, element) {
+			element.ColorPicker({
+				onSubmit:function (e, color) {
+					scope.drawing.colorChanged("#"+color);
+					element.css('background', "#" + color);
+				},
+				color: "#ff0000"
+			});
+			element.css('background', "#ff0000");
+		}
+
+		return {
+			link: linker
+		}
+	}
 ]);
 fm.Include("drawing.Drawing",function(){
     $(document).ready(function(){

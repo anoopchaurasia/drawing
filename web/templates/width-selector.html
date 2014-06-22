@@ -1,0 +1,15 @@
+<div
+    style="float:left">
+    <div
+        ng-click="drawing.currentTool.fill()">
+    </div>
+</div>
+<div
+    style="float:left;">
+    <div
+        ng-repeat="width in drawing.strokeWidths"
+        ng-style="{height: width}"
+        ng-click="drawing.setStrokeWidth(width)"
+        style="width: 50px; background: #000; float: none;margin-top: 2px; padding: 0">
+    </div>
+</div>
