@@ -31,6 +31,13 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 		return me.selectedLayer;	
 	};
 
+    this.remove = function (layer) {
+        var index = me.layerList.indexOf(layer);
+        if (index !== -1){
+            me.layerList.splice(index, 1);
+        }
+    }
+
     this.addLayer = function(name){
         name = name || "Layer " + me.layerList.length;
         me.layerList.push(new Layer(drawing, undefined, $("#layerContainer"), name));

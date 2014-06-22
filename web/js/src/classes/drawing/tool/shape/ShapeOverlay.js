@@ -48,9 +48,16 @@ drawing.tool.shape.ShapeOverlay = function (me) {
                 top: offset.top + shape.currentStartPoint.y
             };
         element = jQuery("<div></div>", {
-            class: 'canvas-text',           
-            css: position,
+            class: 'canvas-text',
+            'tabindex': 5,           
+            css: position
         }).appendTo(parentElement);
+        element.keyup(function(e){
+            if (e.which === 46){
+                shape.stop(true);
+            }
+        });
+        element.focus();
         var size = this.resize(shape.currentEndPoint.x, shape.currentEndPoint.y);
         position = element.position();
         position = {
