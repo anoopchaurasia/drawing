@@ -35,7 +35,7 @@ drawing.layer.BackgroundLayer = function (base, me, Layer) {
 
             for(var j=0; j<HEIGHT; j=j+gap){
                 if(fill==true){
-                    bottomLayer.context.fillStyle = '#eeeeee';
+                    bottomLayer.context.fillStyle = '#ccc';
                     bottomLayer.context.fillRect(i, j, gap, gap);
                     fill = false;
                 }

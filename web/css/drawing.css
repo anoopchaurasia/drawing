@@ -16,7 +16,7 @@ textarea {
     resize: none;
 }
 body{
-    background-color: #ccc;
+    background-color: #333;
 }
 
 .selected{
@@ -24,10 +24,10 @@ body{
 }
 
 #container{
-    position: relative;
+    position: absolute;
     border: 1px dashed #999;
-    border-width: 0 1px 1px 0;
     padding: 0 2px 2px 0;
+    background-color: #fff;
 }
 
 #layerContainer{

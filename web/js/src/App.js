@@ -15,11 +15,22 @@ angular.module('app', [])
 	function () {
 		function linker (scope, element) {
 			element.resizable({
-				resize: function (e, helper) {
+				stop: function (e, helper) {
 	            	scope.drawing.onLayoutChange(helper.size.width, helper.size.height);
 	        	}
 	        });
+	        $(window).resize(function (e) {
+	        	reposition(element, scope);
+	        });
+	        reposition(element, scope);
 		}
+	    function reposition(element, scope){
+	    	element.css({
+        		top: ($(window).height()/2 - element.height()/2),
+        		left: ($(window).width()/2 - element.width()/2),
+        	});
+        	scope.drawing.settings.offset = element.offset();
+	    }
 		return {
 			link: linker
 		}
