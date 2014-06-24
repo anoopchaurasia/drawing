@@ -156,4 +156,8 @@ drawing.layer.Layer = function (me) {
             me.context.drawImage(image, 0, 0);
         };
     };
+
+    this.destroy = function () {
+        me.canvas.remove();  
+    };
 };

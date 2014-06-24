@@ -56,13 +56,9 @@
             </div>
             <div class="left header">
                 <div ng-include="'/templates/color-selector.html'"></div>
-                <div id="layerController">
-                    <div
-                        ng-class="{selected: drawing.layerManager.isSelected(layer)}"
-                        ng-click="drawing.layerManager.selectLayer(layer)" 
-                        ng-repeat="layer in drawing.layerManager.layerList">
-                        <span>{{layer.name}}</span><span ng-click="drawing.layerManager.remove(layer)">x</span>
-                    </div>
+                <div id="layerController"
+                    ng-include="'/templates/layerlist.html'">
+                    
                 </div>
             </div>
         </div>

@@ -13,7 +13,23 @@ table, caption, tbody, tfoot, thead, tr, th, td {
     vertical-align:middle;
 }
 textarea {
-    resize: none;
+    resize: none;`
+}
+.nowrap{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 78%;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.close.circle{
+    display: inline-block;
+    color: red;
+    padding: 1px 4px 3px;
+    border: 1px solid #751313;
+    border-radius: 50%;
+    line-height: 10px;
 }
 body{
     background-color: #333;
@@ -57,6 +73,7 @@ body{
     display: inline-block;
     height:22px;
     width: 22px;
+    margin-right: 2px;
 }
 
 .object_selector{
@@ -138,13 +155,13 @@ body{
 }
 
 #header {
-    width: 50px;
-    height: 100%;
-    border: 1px solid #ccc;
-    border-radius: 2px;
+    width: 60px;
+    left: 2px;
     position: absolute;
     top: 2px;
-    left: 2px;
+    background: #666;
+    padding: 5px;
+    border-radius: 3px;
 }
 #header >div >div{
     float: left;
@@ -202,15 +219,17 @@ body{
 }
 
 .left.header{
-    position: relative;
-    width: 100px;
+    width: 150px;
     position: absolute;
     top: 2px;
+    background: #666;
     right: 2px;
+    padding: 5px;
+    border-radius: 3px;
 }
 
 .selected{
-    background-color: #ff00ff;
+    background-color: #b3b3b3;
 }
 
 .add-image{

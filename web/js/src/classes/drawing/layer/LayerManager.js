@@ -34,7 +34,12 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
     this.remove = function (layer) {
         var index = me.layerList.indexOf(layer);
         if (index !== -1){
+            var isSelected = me.isSelected(layer);
             me.layerList.splice(index, 1);
+            layer.destroy();
+            if(isSelected){
+                me.selectLayer(me.layerList[index - 1]);
+            }
         }
     }
 

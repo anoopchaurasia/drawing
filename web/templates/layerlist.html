@@ -1,0 +1,9 @@
+<div
+    ng-class="{selected: drawing.layerManager.isSelected(layer)}"
+    ng-click="drawing.layerManager.selectLayer(layer)" 
+    ng-repeat="layer in drawing.layerManager.layerList">
+    <span class="nowrap">{{layer.name}}</span>
+    <span
+    	class="close circle" 
+    	ng-click="drawing.layerManager.remove(layer)">x</span>
+</div>
