@@ -88,7 +88,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
      * end of drawing
      */
     this.end = function () {
-        if( overlay && overlay.isActive()){
+        if((overlay && overlay.isActive()) || !me.currentEndPoint ){
             return;
         }
         overlay = new ShapeOverlay(layerManager.frontLayer.canvas.offset(), layerManager.frontLayer.canvas.parent(), me);
