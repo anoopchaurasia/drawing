@@ -73,7 +73,8 @@ body{
     display: inline-block;
     height:22px;
     width: 22px;
-    margin-right: 2px;
+    margin-right: 5px;
+    margin-bottom: 5px; 
 }
 
 .object_selector{

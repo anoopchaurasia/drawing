@@ -1,5 +1,6 @@
 git add .
 git add -u
-git commit -m "enhancement"
+set /p commitmessage=Enter The Commit message:%=%
+git commit -m commitmessage
 git push
 anoopchaurasia
