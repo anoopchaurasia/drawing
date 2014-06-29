@@ -3,6 +3,6 @@
 	<input 
 		type="number"
 		class="input-micro" 
-		ng-model="drawing.currentTool.borderWidth"
-		ng-change="drawing.currentTool.onChange()"/>
+		ng-model="strokewidth"
+		ng-change="tool.setStrokeWidth(strokewidth)"/>
 </div>

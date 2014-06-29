@@ -36,7 +36,7 @@ body{
 }
 
 .selected{
-    border: 2px solid #cdcdcd;
+    outline: 2px solid #cdcdcd;
 }
 
 #container{
@@ -247,4 +247,9 @@ body{
 
 .input-micro{
     width: 45px;
+}
+
+.layer{
+    cursor: pointer;
+    margin-top: 10px;
 }

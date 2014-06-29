@@ -119,6 +119,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
     this.onLayoutChange = function (width, height) {
         me.settings.width = width;
         me.settings.height = height;
+        
         me.layerManager.onLayoutChange(width, height);
     };
 
@@ -380,4 +381,8 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         me.currentTool = me.shapeManager.getShape(data.type);
         me.currentTool.applyShape(data);
     };
+
+    this.isSeletedTool = function (tool) {
+        return me.currentTool === tool;
+    }
 };

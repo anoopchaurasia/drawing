@@ -51,7 +51,15 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 
     this.addImageLayer = function(data, name){
         me.addLayer(name);
-        me.selectedLayer.setImageDataURL(data, drawing.onLayoutChange);
+        me.selectedLayer.setImageDataURL(data, function(width, height){
+            width = Math.max(drawing.settings.width, width);
+            height = Math.max(drawing.settings.height, height);
+            $("#container").css({
+                width: width,
+                height: height
+            });
+            drawing.onLayoutChange(width, height);
+        });
     };
 
     this.selectLayer = function(layer){

@@ -9,6 +9,7 @@ drawing.layer.BackgroundLayer = function (base, me, Layer) {
     
     var bottomLayer;
     this.BackgroundLayer = function(drawing, canvasCont){
+        this.closable = false;
         bottomLayer = new Layer(drawing, canvasCont.prev(), undefined, "no name");
         me.base(drawing, canvasCont, undefined, "Background");
         this.changeSize(drawing.settings.width, drawing.settings.height);

@@ -34,8 +34,14 @@
           </ul>
         </li>
         <li class="dropdown">
-            <div
-                ng-include="drawing.currentTool.template"></div>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                <ul 
+                    ng-click="$event.stopPropagation();"
+                    class="dropdown-menu" 
+                    role="menu"
+                    onload="tool=drawing.currentTool"
+                            ng-include="drawing.currentTool.template">
+                  </ul>
         </li>
         <li class="dropdown pull-right">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
