@@ -11,6 +11,10 @@ drawing.tool.shape.Line = function (base, me) {
         me = _me;
     };
 
+    this.init = function () {
+        Static.template = "/templates/tooloptions/line.html";
+    };
+
     /**
      * constructor
      * @param {drawing.Layer} ml
@@ -38,5 +42,12 @@ drawing.tool.shape.Line = function (base, me) {
      */
     this.toString = function () {
         return me.package.ShapeManager.MODE_LINE;
+    };
+
+    this.onChange = function () {
+        this.setStrokeWidth(me.borderWidth);
+        if(me.currentEndPoint){
+            this.draw(me.currentEndPoint.x, me.currentEndPoint.y);
+        }
     };
 };

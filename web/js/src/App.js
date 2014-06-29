@@ -10,10 +10,9 @@ angular.module('app', [])
 			    scope.$apply();
 			});
 			element.click(function (e) {
-				if(e.taget.nodeName === "INPUT"){
-					return false;
+				if(e.target.nodeName === "INPUT"){
+					e.stopPropagation();
 				}
-				input.click();
 			});
 		}
 	}

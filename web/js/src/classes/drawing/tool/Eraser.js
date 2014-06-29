@@ -12,6 +12,10 @@ drawing.tool.Eraser = function (base, me) {
         me = _me;
     };
 
+    this.init = function () {
+        Static.template = "/templates/tooloptions/eraser.html";
+    };
+
     var layerManager;
 
     /**
@@ -55,5 +59,12 @@ drawing.tool.Eraser = function (base, me) {
      */
     this.toString = function () {
         return me.package.ToolManager.MODE_ERASER;
+    };
+
+    this.onChange = function () {
+        this.setStrokeWidth(me.borderWidth);
+        if(me.currentEndPoint){
+            this.draw(me.currentEndPoint.x, me.currentEndPoint.y);
+        }
     };
 };

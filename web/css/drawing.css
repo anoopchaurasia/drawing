@@ -156,7 +156,7 @@ body{
 }
 
 #header {
-    width: 60px;
+    width: 65px;
     left: 2px;
     position: absolute;
     top: 2px;
@@ -239,4 +239,12 @@ body{
 
 #layerController{
     margin-top: 10px;
+}
+
+body{
+    -webkit-user-select: none;
+}
+
+.input-micro{
+    width: 45px;
 }
