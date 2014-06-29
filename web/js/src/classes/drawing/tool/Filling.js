@@ -8,10 +8,11 @@ drawing.tool.Filling = function (base, me) {
         me = _me
     };
 
-    var canvasWidth, outlineLayer, canvasHeight, outlineLayerData, clickedColorR, clickedColorG, clickedColorB, layerManager;
+    var canvasWidth, sensitivity, outlineLayer, canvasHeight, outlineLayerData, clickedColorR, clickedColorG, clickedColorB, layerManager;
     var newColorR, newColorG, newColorB;
     this.Filling = function (ml) {
         base(ml);
+        sensitivity = 0;
         layerManager = ml;
     };
 
@@ -21,11 +22,12 @@ drawing.tool.Filling = function (base, me) {
         var g = outlineLayerData[pixelPos + 1];
         var b = outlineLayerData[pixelPos + 2];
         var a = outlineLayerData[pixelPos + 3];
-
-        if (Math.abs(r - clickedColorR) > 5 || Math.abs(g - clickedColorG) > 5 || Math.abs(b - clickedColorB) > 5) {
+        if (Math.abs(r - clickedColorR) > sensitivity || Math.abs(g - clickedColorG) > sensitivity || Math.abs(b - clickedColorB) > sensitivity) {
             return false;
         }
-
+        if(r + g + b === 0 && a > 0){
+            return false;
+        }
         return true;
     }
 
@@ -38,15 +40,6 @@ drawing.tool.Filling = function (base, me) {
         outlineLayer = layer.getData();
         outlineLayerData = outlineLayer.data;
         
-        if(layer.instanceOf(drawing.layer.BackgroundLayer)){
-            for (var i = 0, len = outlineLayerData.length; i < len; i+=4){
-                colorPixel(outlineLayerData, i);
-            }
-            layer.context.putImageData(outlineLayer, 0, 0);
-            layer.context.stroke();
-            return ;
-        }
-
         var pixelPos = (startY * canvasWidth + startX) * 4;
         clickedColorR = outlineLayerData[pixelPos + 0];
         clickedColorG = outlineLayerData[pixelPos + 1];

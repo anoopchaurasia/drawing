@@ -15,10 +15,6 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
         me = _me;
     };
 
-    this.init = function () {
-        Static.strokeWidth = 1;
-    }
-
     /**
      * @type {drawing.tool.shape.ShapeOverlay}
      */

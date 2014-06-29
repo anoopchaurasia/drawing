@@ -4,7 +4,7 @@
         ng-repeat="(index,data) in drawing.getToolList()" >
         <span
             class="tool {{index}}"
-            ng-class="{selected: drawing.isSeletedTool(data)"
+            ng-class="{selected: drawing.isSeletedTool(data)}"
             ng-click="drawing.setTool(index)"
             >
         </span>
@@ -16,7 +16,7 @@
         <span
             ng-click="drawing.setShape(index)"
             class="tool {{index}}"
-            ng-class="{selected: drawing.isSeletedTool(data)">
+            ng-class="{selected: drawing.isSeletedTool(data)}">
         </span>
     </div>
 </div>
