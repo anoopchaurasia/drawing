@@ -1,3 +1,4 @@
+
 fm.Package("drawing.tool");
 fm.Class("ColorPicker", "drawing.tool.Tool");
 
