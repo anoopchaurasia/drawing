@@ -1,7 +1,10 @@
 function mainController($scope, $rootScope) {
     
     function safeApply(){
-        $rootScope.$apply();
+
+        if($rootScope.$$phase != '$apply' &&$rootScope.$$phase != '$digest'){
+            $rootScope.$apply();
+        }
     }
 
 	$rootScope.drawing = new drawing.Drawing(safeApply);
