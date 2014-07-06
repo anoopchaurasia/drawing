@@ -20,11 +20,11 @@ angular.module('app', [])
 .directive('resize', [
 	function () {
 		function linker (scope, element) {
-			element.resizable({
-				stop: function (e, helper) {
-	            	scope.drawing.onLayoutChange(helper.size.width, helper.size.height);
-	        	}
-	        });
+			// element.resizable({
+			// 	stop: function (e, helper) {
+	  //           	scope.drawing.onLayoutChange(helper.size.width, helper.size.height);
+	  //       	}
+	  //       });
 	        $(window).resize(function (e) {
 	        	reposition(element, scope);
 	        });
@@ -50,7 +50,14 @@ angular.module('app', [])
 					scope.drawing.colorChanged("#"+color);
 					element.css('background', "#" + color);
 				},
+				onChange: function (e, color) {
+					scope.drawing.colorChanged("#"+color);
+					element.css('background', "#" + color);
+				},
 				color: "#ff0000"
+			});
+			scope.$on("colorChange", function () {
+				
 			});
 			element.css('background', "#ff0000");
 		}

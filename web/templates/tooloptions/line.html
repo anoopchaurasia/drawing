@@ -1,36 +1,31 @@
 <li>
-	<a href="#">
-		<label
-			style="width: 200px;">
-			<span> Stroke Width </span>
-			<input 
-				type="number"
-				class="input-micro" 
-				ng-model="strokewidth"
-				ng-init="strokewidth=tool.strokeWidth"
-				ng-change="tool.setStrokeWidth(strokewidth)"/>
-		</label>
-	</a>
+
+	<label
+		style="width: 200px;">
+		<span> Stroke Width </span>
+		<input 
+			type="number"
+			class="input-micro" 
+			ng-model="strokewidth"
+			ng-init="strokewidth=tool.strokeWidth"
+			ng-change="tool.setStrokeWidth(strokewidth)"/>
+	</label>
 </li>
 <li>
-	<a href="#">
-		<label>
-			<span>Left Arrow</span>
-			<input  
-				type='checkbox'
-				ng-model="lineleftarrow"
-				ng-change="tool.enableLeftArrow(lineleftarrow)" />
-		</label>
-	</a>
+	<label>
+		<span>Left Arrow</span>
+		<input  
+			type='checkbox'
+			ng-model="lineleftarrow"
+			ng-change="tool.enableLeftArrow(lineleftarrow)" />
+	</label>
 </li>
 <li>
-	<a href="#">
-		<label>
-			<span>Right Arrow</span>
-			<input 
-				type='checkbox'
-				ng-model="linerightarrow"
-				ng-change="tool.enableRightArrow(linerightarrow)" />
-		</label>
-	</a>
+	<label>
+		<span>Right Arrow</span>
+		<input 
+			type='checkbox'
+			ng-model="linerightarrow"
+			ng-change="tool.enableRightArrow(linerightarrow)" />
+	</label>
 </li>

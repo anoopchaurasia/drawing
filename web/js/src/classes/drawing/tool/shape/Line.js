@@ -17,11 +17,10 @@ drawing.tool.shape.Line = function (base, me) {
 
     /**
      * constructor
-     * @param {drawing.Layer} ml
-     * @param {drawing.Layer} l
+     * @param {drawing.Drawing} drw
      */
-    this.Line = function (ml, l) {
-        base(ml, l);
+    this.Line = function (drw) {
+        base(drw);
     };
 
     /**
@@ -66,11 +65,17 @@ drawing.tool.shape.Line = function (base, me) {
     }
 
     this.enableLeftArrow = function (value) {
-        me.leftarrow = value;    
+        me.leftarrow = value;
+        if(me.isDrawing){
+            me.draw(me.currentEndPoint.x, me.currentEndPoint.y);    
+        }
     };
 
     this.enableRightArrow = function (value) {
-        me.rightarrow = value;    
+        me.rightarrow = value;   
+        if(me.isDrawing){
+            me.draw(me.currentEndPoint.x, me.currentEndPoint.y);    
+        }
     };
 
 };

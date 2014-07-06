@@ -15,23 +15,23 @@ drawing.tool.Tool = function (me, Layer) {
         me = _me;
     };
 
-    var layer;
 
     /**
-     * @type {drawing.Layer}
+     * @type {drawing.layer.LayerManager}
      */
     var layerManager;
 
     /**
      * @param {drawing.Layer} l
      */
-    this.Tool = function (l) {
-        this.strokeWidth = 1;
-        this.strokeColor = "#ddd";
-        this.fillColor = "#ddd";
+    this.Tool = function (drawing) {
+        this.isDrawing = false;
+        this.lineWidth = drawing.settings.lineWidth;
+        this.strokeStyle = drawing.settings.strokeStyle;
+        this.fillColor = drawing.settings.fillColor;
         this.currentStartPoint = null;
         this.currentEndPoint = null;
-        layer = l;
+        layerManager = drawing.layerManager;
     };
 
     /**
@@ -40,8 +40,10 @@ drawing.tool.Tool = function (me, Layer) {
      * @return {Undefined}
      */
     this.setStrokeWidth = function (width) {
-        this.strokeWidth = width;
-        getContext().lineWidth = width;
+        this.lineWidth = width;
+        if(me.isDrawing){
+            getContext().lineWidth = width;
+        }
         me.setCursor();
     };
 
@@ -51,14 +53,18 @@ drawing.tool.Tool = function (me, Layer) {
      * @param  {Float} y
      */
     this.start = function (x, y) {
+        this.isDrawing = true;
         this.currentStartPoint = {
             x: x,
             y: y
         };
-        getContext().beginPath();
-        var quarterStrokeWidth = Math.floor(me.strokeWidth / 2);
-        getContext().moveTo(x - quarterStrokeWidth, y);
-        me.setCursor();
+        var layerContext = getContext();
+        layerContext.beginPath();
+        layerContext.lineWidth = me.lineWidth;
+        layerContext.strokeStyle = me.strokeStyle;
+        layerContext.fillStyle = me.fillStyle;
+        var quarterStrokeWidth = Math.floor(me.lineWidth / 2);
+        layerContext.moveTo(x - quarterStrokeWidth, y);
     };
 
     /**
@@ -67,14 +73,22 @@ drawing.tool.Tool = function (me, Layer) {
      * @param  {Float} y
      */
     this.end = function (x, y) {
+        this.isDrawing = false;
         getContext().closePath();
     };
 
+    this.setProperties = function(){
+        var layerContext = layerManager.selectedLayer;
+        layerContext.lineWidth = me.lineWidth;
+        layerContext.strokeStyle = me.strokeStyle;
+        layerContext.fillStyle = me.fillStyle;
+    };
+
     function getContext(){
-        if(layer.instanceOf(Layer)){
-            return layer.context;
+        if(!me.getSub().instanceOf(drawing.tool.shape.Shape)){
+            return layerManager.selectedLayer.context;
         }
-        return layer.selectedLayer.context;
+        return layerManager.frontLayer.context;
     }
 
     /**
@@ -95,7 +109,9 @@ drawing.tool.Tool = function (me, Layer) {
      * @param  {Float} y
      */
     this.mouseReenter = function (x, y) {
-        getContext().moveTo(x, y);
+        if(me.isDrawing){
+            getContext().moveTo(x, y);
+        }
     };
 
 
@@ -105,7 +121,7 @@ drawing.tool.Tool = function (me, Layer) {
      * @return {Boolean}
      */
     this.isSelectedStrokeWidth = function (w) {
-        return w === me.strokeWidth;
+        return w === me.lineWidth;
     };
 
     /**
@@ -113,15 +129,18 @@ drawing.tool.Tool = function (me, Layer) {
      * @param {String} colorcontains color string
      */
     this.setStrokeColor = function (color) {
-        this.strokeColor = color;
-        getContext().strokeStyle = color;
-        me.setCursor();
+        this.strokeStyle = color;
+        if(me.isDrawing){
+            getContext().strokeStyle = color;
+        }
     };
 
     this.setFillColor = function(color){
-        getContext().fillStyle = color;
+        if(me.isDrawing){
+            getContext().fillStyle = color;
+            getContext().stroke();
+        }
         this.fillColor = color;
-        getContext().stroke();
     };
 
     Abstract.setCursor = function () {};

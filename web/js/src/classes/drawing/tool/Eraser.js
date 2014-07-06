@@ -22,9 +22,9 @@ drawing.tool.Eraser = function (base, me) {
      * constructor
      * @param {CanvasRenderingContext2D } cx
      */
-    this.Eraser = function (l) {
-        base(l);
-        layerManager = l;
+    this.Eraser = function (drawing) {
+        base(drawing);
+        layerManager = drawing.layerManager;
     };
 
 
@@ -35,8 +35,8 @@ drawing.tool.Eraser = function (base, me) {
      * @return {Undefined}
      */
     this.draw = function (x, y) {
-        var strokeWidthHalf = Math.floor(me.strokeWidth);
-        layerManager.selectedLayer.context.clearRect(x - strokeWidthHalf, y - strokeWidthHalf, me.strokeWidth * 2, me.strokeWidth * 2);
+        var lineWidthHalf = Math.floor(me.lineWidth);
+        layerManager.selectedLayer.context.clearRect(x - lineWidthHalf, y - lineWidthHalf, me.lineWidth * 2, me.lineWidth * 2);
         layerManager.selectedLayer.context.stroke();
     };
 
@@ -50,7 +50,7 @@ drawing.tool.Eraser = function (base, me) {
      */
     this.setCursor = function () {
         var canvas = layerManager.selectedLayer.canvas;
-        canvas.css("cursor", "url(/images/cursor/" + me.strokeWidth * 2 + "pix_eraser.cur), pointer");
+        canvas.css("cursor", "url(/images/cursor/" + me.lineWidth * 2 + "pix_eraser.cur), pointer");
     };
 
     /**
@@ -59,12 +59,5 @@ drawing.tool.Eraser = function (base, me) {
      */
     this.toString = function () {
         return me.package.ToolManager.MODE_ERASER;
-    };
-
-    this.onChange = function () {
-        this.setStrokeWidth(me.borderWidth);
-        if(me.currentEndPoint){
-            this.draw(me.currentEndPoint.x, me.currentEndPoint.y);
-        }
     };
 };

@@ -26,14 +26,13 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
 
     /**
      * constructor
-     * @param {drawing.Layer} ml
+     * @param {drawing.Drawing} drw
      * @param {drawing.Layer} l
      */
-    this.Shape = function (ml) {
-        layerManager = ml;
-        me.strokeWidth = 1;
+    this.Shape = function (drw) {
+        layerManager = drw.layerManager;
         this.fillShape = false;
-        base(layerManager);
+        base(drw);
     };
 
 
@@ -63,7 +62,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
             destroyLayer();
         }
         layerManager.frontLayer.show();
-        layerManager.selectedLayer.context.lineWidth = me.strokeWidth;
+        layerManager.selectedLayer.context.lineWidth = me.lineWidth;
         this.base.start(x, y);
         layerManager.frontLayer.setContextProps(layerManager.selectedLayer.getContextProps());
     };
@@ -134,7 +133,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
     this.setStrokeWidth = function (width) {
         layerManager.selectedLayer.context.lineWidth = width;
         me.base.setStrokeWidth(width);
-        me.strokeWidth = width;
+        me.lineWidth = width;
         me.currentEndPoint && me.draw(me.currentEndPoint.x, me.currentEndPoint.y);
     };
 
@@ -183,6 +182,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
         var minY =Math.min(data.start.y, data.end.y);
         cls.start(data.start.x - minX, data.start.y - minY);
         me.currentEndPoint = data.end;
+        me.setProperties();
         cls.draw(data.end.x - minX , data.end.y  -minY);
         cls.end();
 

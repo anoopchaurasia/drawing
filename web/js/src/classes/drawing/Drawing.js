@@ -27,7 +27,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
          * @constant
          * @type {String}
          */
-        Static.Const.strokeWidths = [1, 2, 4, 8, 12];
+        Static.Const.lineWidths = [1, 2, 4, 8, 12];
         Static.Const.colors = ['#FF0000','#FFFF00','#0033FF','#009900','#FF9900','#660099'];
     }
 
@@ -86,11 +86,14 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
      *  @type {drawing.tool.shape.ShapeManager}
      */
 
-    this.Drawing = function () {
+     var safeApply;
+
+    this.Drawing = function (sa) {
         userActions = new UserActionList();
         resizeCallbacks = [];
         isMouseDown = false;
 
+        safeApply = sa;
         //events
         this.mousedown = mousedown;
         this.mousemove = mousemove;
@@ -136,6 +139,10 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         var canvas = me.layerManager.getSelectedLayer().canvas;
         if ("" + me.currentTool === "filler") {
             me.currentTool.fill(e.pageX - me.settings.offset.left, e.pageY - me.settings.offset.top, me.settings.selectedColor);
+        } if ("" + me.currentTool === "color_picker") {
+           var color = me.currentTool.pick(e.pageX - me.settings.offset.left, e.pageY - me.settings.offset.top);
+           me.settings.color = color;
+           
         } else if (typeof me.currentTool.onClick === 'function') {
             me.currentTool.onClick(e);
         }
@@ -302,6 +309,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
         me.toolManager.getTool(type, function(tool){
             me.currentTool = tool;
             me.currentTool.setCursor();
+            safeApply();
         });
     };
 
@@ -317,6 +325,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
             me.currentTool = shape;    
             me.currentTool.setFill(false);
             me.currentTool.setCursor();
+            safeApply();
         });
     };
 
@@ -327,10 +336,10 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
 
     /**
      * set stroke width
-     * @param {Integer} strokeWidth
+     * @param {Integer} lineWidth
      */
-    this.setStrokeWidth = function (strokeWidth) {
-        me.currentTool.setStrokeWidth(strokeWidth);
+    this.setStrokeWidth = function (lineWidth) {
+        me.currentTool.setStrokeWidth(lineWidth);
     };
 
     /**

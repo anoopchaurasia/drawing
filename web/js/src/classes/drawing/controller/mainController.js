@@ -1,6 +1,10 @@
 function mainController($scope, $rootScope) {
     
-	$rootScope.drawing = new drawing.Drawing();
+    function safeApply(){
+        $rootScope.$apply();
+    }
+
+	$rootScope.drawing = new drawing.Drawing(safeApply);
 
 	this.colorChanged = function(color){
        $scope.drawing.colorChanged(color);

@@ -13,11 +13,11 @@ drawing.tool.shape.Rotate = function (base, me) {
 
     /**
      * constructor
-     * @param {drawing.Layer} ml
+     * @param {drawing.Drawing} drw
      * @param {drawing.Layer} l
      */
-    this.Rotate = function (ml, l) {
-        base(ml, l);
+    this.Rotate = function (drw) {
+        base(drw);
         this.showWidthSelector = false;
     };
 

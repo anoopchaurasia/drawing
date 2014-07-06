@@ -13,11 +13,11 @@ drawing.tool.shape.Circle = function (base, me) {
 
     /**
      * constructor
-     * @param {drawing.Layer} ml
+     * @param {drawing.Drawing} drw
      * @param {drawing.Layer} l
      */
-    this.Circle = function (ml, l) {
-        base(ml, l);
+    this.Circle = function (drw) {
+        base(drw);
     };
 
     /**

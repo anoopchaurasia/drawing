@@ -14,6 +14,7 @@ drawing.tool.ToolManager = function (me) {
          */
         Static.Const.MODE_FILLER = 'filler';
         Static.Const.MODE_ERASER = 'eraser';
+        Static.Const.MODE_COLOR_PICKER = 'color_picker';
         Static.Const.MODE_PENCIL = 'pencil';
         Static.Const.MODE_TEXT = 'text_input';
     }
@@ -28,6 +29,7 @@ drawing.tool.ToolManager = function (me) {
     this.ToolManager = function (drw) {
         toolList = {};
         drawing = drw;
+        toolList[me.MODE_COLOR_PICKER] = "drawing.tool.ColorPicker";
         toolList[me.MODE_TEXT]  = 'drawing.tool.Text';
         toolList[me.MODE_FILLER] = "drawing.tool.Filling";// new Filling(masterLayer, image, color);
         toolList[me.MODE_ERASER] = "drawing.tool.Eraser"; // new Eraser(masterLayer);
@@ -38,7 +40,7 @@ drawing.tool.ToolManager = function (me) {
         var toolClass = toolList[type];
         if (typeof toolClass === 'string') {
             fm.Include(toolClass, function(){
-                toolList[type] = new (fm.isExist(toolClass))(drawing.layerManager);
+                toolList[type] = new (fm.isExist(toolClass))(drawing);
                 cb(toolList[type]);
             });
             return toolClass;

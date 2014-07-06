@@ -14,7 +14,6 @@ drawing.tool.shape.ShapeManager = function (me) {
         Static.Const.MODE_SELECT_OBJECT = 'object_selector';
         Static.Const.MODE_SELECT_AREA = 'select_area';
         Static.Const.MAGIC_WAND = 'magic_wand';
-        Static.Const.MODE_COLOR_PICKER = 'color_picker';
         Static.Const.MODE_LINE = 'line';
         Static.Const.MODE_RECTANGLE = 'rect';
         Static.Const.MODE_CIRCLE = 'circle';
@@ -41,7 +40,6 @@ drawing.tool.shape.ShapeManager = function (me) {
         shapeList[me.MODE_SELECT_OBJECT] = 'object_selector';
         shapeList[me.MODE_SELECT_AREA]       = 'select_area';
         shapeList[me.MAGIC_WAND]         = 'magic_wand';
-        shapeList[me.MODE_COLOR_PICKER]      = 'color_picker';
         shapeList[me.MODE_ANNOTATION]        = 'annotation';
         shapeList[me.MODE_BRUSH]         = 'brush';
         shapeList[me.MODE_BLUR]      = 'blur';
@@ -59,8 +57,7 @@ drawing.tool.shape.ShapeManager = function (me) {
         var shape = shapeList[type];
         if (typeof shape === 'string') {
             fm.Include(shape, function(){
-                shapeList[type]  = new (fm.isExist(shape))(drawing.layerManager);
-                shapeList[type].setStrokeWidth(me.package.Shape.strokeWidth);
+                shapeList[type]  = new (fm.isExist(shape))(drawing);
                 cb(shapeList[type]);
             });
             return shape;

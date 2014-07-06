@@ -22,9 +22,9 @@ drawing.tool.Pencil = function (base, me) {
      * constructor
      * @param {drawing.Layer} l
      */
-    this.Pencil = function (l) {
-        base(l);
-        layerManager = l;
+    this.Pencil = function (drawing) {
+        base(drawing);
+        layerManager = drawing.layerManager;
     };
 
 
@@ -35,7 +35,7 @@ drawing.tool.Pencil = function (base, me) {
      * @return {Undefined}
      */
     this.draw = function (x, y) {
-        layerManager.selectedLayer.context.lineWidth = me.strokeWidth;
+        layerManager.selectedLayer.context.lineWidth = me.lineWidth;
         layerManager.selectedLayer.context.lineTo(x, y);
         layerManager.selectedLayer.context.stroke();
     };

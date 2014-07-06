@@ -13,11 +13,10 @@ drawing.tool.shape.Rectangle = function (base, me) {
 
     /**
      * constructor
-     * @param {CanvasRenderingContext2D } cx
-     * @param {HTMLCanvasElement} cv
+     * @param {drawing.Drawing} drw
      */
-    this.Rectangle = function (ml, l) {
-        base(ml, l);
+    this.Rectangle = function (drw) {
+        base(drw);
     };
 
     /**

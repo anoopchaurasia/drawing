@@ -28,6 +28,9 @@ drawing.tool.Filling = function (base, me) {
         if(r + g + b === 0 && a > 0){
             return false;
         }
+        if(r == clickedColorR && g == clickedColorG && b == clickedColorB){
+            return false;
+        }
         return true;
     }
 
