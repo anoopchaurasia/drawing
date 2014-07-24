@@ -46,17 +46,13 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
     this.addLayer = function(name){
         name = name || "Layer " + me.layerList.length;
         me.layerList.push(new Layer(drawing, undefined, $("#layerContainer"), name));
-        var data = me.selectedLayer.getData();
-
         me.selectedLayer = me.layerList[me.layerList.length - 1];
     };
 
     this.addDuplicateLayer = function () {
-        var name = me.selectedLayer.name + "- duplicate";
-        var newLayer = new Layer(drawing, undefined, $("#layerContainer"), name);
-        me.layerList.push(newLayer);
-        newLayer.setData(me.selectedLayer.getData());
-        me.selectedLayer = newLayer;
+        var data = me.selectedLayer.getData();
+        me.addLayer(me.selectedLayer.name + "- duplicate");
+        me.selectedLayer.setData(data);
     };
 
     this.addImageLayer = function(data, name){
@@ -81,10 +77,12 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
     };
 
     this.showHideLayer = function (layer) {
+        layer = layer || me.selectedLayer;
         layer.canvas.toggle();
     };
 
     this.clearLayer = function (layer) {
+        layer = layer || me.selectedLayer;
         layer.clear();
     }
 };
