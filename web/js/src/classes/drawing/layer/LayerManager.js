@@ -32,6 +32,7 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 	};
 
     this.remove = function (layer) {
+        layer = layer || me.selectedLayer;
         var index = me.layerList.indexOf(layer);
         if (index !== -1){
             var isSelected = me.isSelected(layer);
@@ -78,11 +79,16 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
 
     this.showHideLayer = function (layer) {
         layer = layer || me.selectedLayer;
-        layer.canvas.toggle();
+        layer.toggle();
     };
 
     this.clearLayer = function (layer) {
         layer = layer || me.selectedLayer;
         layer.clear();
+    }
+
+    this.resizeLayer = function (layer, width, height) {
+        layer = layer || me.selectedLayer;
+        layer.resizeContent(width, height);
     }
 };

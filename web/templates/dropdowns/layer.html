@@ -22,14 +22,14 @@
         </a>
     </li>
     <li
-        ng-click="drawing.layerManager.showHideLayer(drawing.layerManager.selectedLayer)">
+        ng-click="drawing.layerManager.showHideLayer()">
         <a
             href="#">
             Show/Hide
         </a>
     </li>
     <li
-        ng-click="drawing.layerManager.remove(drawing.layerManager.selectedLayer)">
+        ng-click="drawing.layerManager.remove()">
         <a
             href="#">
             Delete
@@ -59,14 +59,15 @@
             Trim
         </a>
     </li>
-    <li>
+    <li
+        ng-click="drawing.layerManager.resizeLayer( null, 100, 100)">
         <a
             href="#">
             Resize..
         </a>
     </li>
     <li
-        ng-click="drawing.layerManager.clearLayer(drawing.layerManager.selectedLayer)">
+        ng-click="drawing.layerManager.clearLayer()">
         <a
             href="#">
             Clear

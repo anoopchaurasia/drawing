@@ -10,10 +10,10 @@ drawing.tool.Filling = function (base, me) {
 
     var canvasWidth, sensitivity, outlineLayer, canvasHeight, outlineLayerData, clickedColorR, clickedColorG, clickedColorB, layerManager;
     var newColorR, newColorG, newColorB;
-    this.Filling = function (ml) {
-        base(ml);
+    this.Filling = function (drawing) {
+        base(drawing);
         sensitivity = 0;
-        layerManager = ml;
+        layerManager = drawing.layerManager;
     };
 
 
@@ -42,7 +42,7 @@ drawing.tool.Filling = function (base, me) {
         canvasHeight = layer.canvas[0].height;
         outlineLayer = layer.getData();
         outlineLayerData = outlineLayer.data;
-        
+
         var pixelPos = (startY * canvasWidth + startX) * 4;
         clickedColorR = outlineLayerData[pixelPos + 0];
         clickedColorG = outlineLayerData[pixelPos + 1];

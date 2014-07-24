@@ -137,12 +137,16 @@ drawing.layer.Layer = function (me) {
         return me.context.getImageData(0, 0, me.canvas[0].width, me.canvas[0].height);
     };
 
-    this.setData = function (data) {
-        me.context.putImageData(data, 0, 0);
+    this.setData = function (data, width, height) {
+        me.context.putImageData(data, 0, 0, 0, 0, width, height);
     };
 
     this.setImage = function (image) {
         me.context.drawImage(image[0], 0, 0, me.canvas[0].width, me.canvas[0].height);
+    };
+
+    this.toggle = function () {
+        me.canvas.toggle();
     };
 
     /**
@@ -164,4 +168,10 @@ drawing.layer.Layer = function (me) {
     this.destroy = function () {
         me.canvas.remove();
     };
+
+    this.resizeContent = function (width, height) {
+        var data = me.getData();
+        me.clear();
+        me.setData(data, width, height);
+    }
 };
