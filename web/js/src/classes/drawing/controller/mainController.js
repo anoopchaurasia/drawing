@@ -1,5 +1,5 @@
 function mainController($scope, $rootScope) {
-    
+
     function safeApply(){
 
         if($rootScope.$$phase != '$apply' &&$rootScope.$$phase != '$digest'){
@@ -14,14 +14,18 @@ function mainController($scope, $rootScope) {
     };
 
     this.getSelectedClass = function(type){
-        
+
     };
 
     this.setSelectedColorType = function(type){
-        
+
     };
 
     this.addLayer = function(){
     	$scope.drawing.addLayer();
+    };
+
+    this.createNewLayer = function(){
+        $scope.drawing.layerManager.addLayer();
     };
 }

@@ -34,12 +34,12 @@ drawing.tool.Text = function (base, me) {
         var offset = layerManager.selectedLayer.canvas.offset();
         if (isWriting) {
             layerManager.selectedLayer.context.font = "";
-            var textarea = element.children();
+            var textarea = element;
             layerManager.selectedLayer.context.textBaseline = "top";
             layerManager.selectedLayer.context.textAlign = "left";
             var lineheight = parseInt(textarea.css('font-size')) + 5;
             layerManager.selectedLayer.context.font = textarea.css('font-size') + "  " + textarea.css('font-family');
-            var values = textarea.val().split("\n");
+            var values = textarea.text().split("\n");
             var textoffset = textarea.offset();
             var x = textoffset.left - offset.left;
             var y = textoffset.top - offset.top;
@@ -59,15 +59,20 @@ drawing.tool.Text = function (base, me) {
 
         element = jQuery("<div></div>", {
             class: 'canvas-text',
+            contenteditable:true,
             css: {
                 left: x + offset.left,
                 top: offset.top + y,
+                width:200,
+                height: 40,
                 color: layerManager.selectedLayer.context.strokeStyle
-            },
-            html: "<textarea></textarea>"
+            }
         }).appendTo(layerManager.selectedLayer.canvas.parent());
-        element.children().focus();
-        element.draggable();
+        element.focus();
+        element.keyup(function(){
+            debugger;
+        });
+        //element.draggable();
         me.base.start(x, y);
     };
 

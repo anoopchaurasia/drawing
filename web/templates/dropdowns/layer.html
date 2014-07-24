@@ -1,87 +1,94 @@
-<a href="#" 
-    class="dropdown-toggle" 
+<a href="#"
+    class="dropdown-toggle"
     data-toggle="dropdown">
     Layer
 </a>
-<ul 
+<ul
     class="dropdown-menu" role="menu">
-    <li>
-        <a 
+    <li
+        ng-click="drawing.layerManager.addLayer()">
+
+        <a
             href="#">
             New
         </a>
     </li>
-    <li>
-        <a 
+    <li
+        ng-click="drawing.layerManager.addDuplicateLayer()">
+
+        <a
             href="#">
             Duplicate
         </a>
     </li>
-    <li>
-        <a 
+    <li
+        ng-click="drawing.layerManager.showHideLayer(drawing.layerManager.selectedLayer)">
+        <a
             href="#">
             Show/Hide
         </a>
     </li>
-    <li>
-        <a 
+    <li
+        ng-click="drawing.layerManager.remove(drawing.layerManager.selectedLayer)">
+        <a
             href="#">
             Delete
         </a>
     </li>
-    <li 
+    <li
         class="divider">
     </li>
     <li>
-        <a 
+        <a
             href="#">
             Move
         </a>
     </li>
     <li>
-        <a 
+        <a
             href="#">
             Opacity...
         </a>
     </li>
-    <li 
+    <li
         class="divider">
     </li>
     <li>
-        <a 
+        <a
             href="#">
             Trim
         </a>
     </li>
     <li>
-        <a 
+        <a
             href="#">
             Resize..
         </a>
     </li>
-    <li>
-        <a 
+    <li
+        ng-click="drawing.layerManager.clearLayer(drawing.layerManager.selectedLayer)">
+        <a
             href="#">
             Clear
         </a>
     </li>
-    <li 
+    <li
         class="divider">
     </li>
     <li>
-        <a 
+        <a
             href="#">
             Difference Down
         </a>
     </li>
     <li>
-        <a 
+        <a
             href="#">
             Merge Down
         </a>
     </li>
     <li>
-        <a 
+        <a
             href="#">
             Flattern Image
         </a>
