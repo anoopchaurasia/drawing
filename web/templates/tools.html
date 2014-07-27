@@ -12,11 +12,11 @@
 </div>
 <div>
     <div
-        ng-repeat="(index,data) in drawing.getShapeList()" >
+        ng-repeat="(index, data) in drawing.getShapeList() | filter:hasClass" >
         <span
-            ng-click="drawing.setShape(index)"
-            class="tool {{index}}"
-            ng-class="{selected: drawing.isSeletedTool(data)}">
+            ng-click="drawing.setShape(data.name)"
+            class="tool {{data.name}}"
+            ng-class="{selected: drawing.isSeletedTool(data.class)}">
         </span>
     </div>
 </div>

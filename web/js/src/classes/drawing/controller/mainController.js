@@ -28,4 +28,8 @@ function mainController($scope, $rootScope) {
     this.createNewLayer = function(){
         $scope.drawing.layerManager.addLayer();
     };
+
+    $scope.hasClass = function (shape) {
+        return !!shape.class;
+    }
 }

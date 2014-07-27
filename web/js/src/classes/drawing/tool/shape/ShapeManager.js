@@ -34,42 +34,88 @@ drawing.tool.shape.ShapeManager = function (me) {
     var shapeList, drawing;
 
     this.ShapeManager = function (drw) {
-        shapeList = {};
         //coming
         drawing = drw;
-        shapeList[me.MODE_SELECT_OBJECT] = 'object_selector';
-        shapeList[me.MODE_SELECT_AREA]       = 'select_area';
-        shapeList[me.MAGIC_WAND]         = 'magic_wand';
-        shapeList[me.MODE_ANNOTATION]        = 'annotation';
-        shapeList[me.MODE_BRUSH]         = 'brush';
-        shapeList[me.MODE_BLUR]      = 'blur';
-        shapeList[me.MODE_SHARPEN]       = 'sharpen';
-        shapeList[me.MODE_CLONE_OBJECT]      = 'clone_object';
-        shapeList[me.MODE_CONTRAST]      = 'contrast';
-        shapeList[me.MODE_LINE] = "drawing.tool.shape.Line"; // new Line(masterLayer, secondaryLayer);
-        shapeList[me.MODE_CIRCLE] = "drawing.tool.shape.Circle"; // new Circle(masterLayer, secondaryLayer);
-        shapeList[me.MODE_ARROW_LINE] = "drawing.tool.shape.Rotate"; // new Rectangle(masterLayer, secondaryLayer);
-        shapeList[me.MODE_RECTANGLE] = "drawing.tool.shape.Rectangle"; //new ArrowLine(masterLayer, secondaryLayer);
-        shapeList[me.MODE_ROTATE] = "drawing.tool.shape.ArrowLine"; //new Rotate(masterLayer, secondaryLayer);
+        
+        shapeList = [
+            {
+                name: me.MODE_SELECT_OBJECT
+            },
+            {
+                name: me.MODE_SELECT_AREA
+            },
+            {
+                name: me.MAGIC_WAND
+            },
+            {
+                name: me.MODE_ANNOTATION
+            },
+            {
+                name: me.MODE_BRUSH
+            },
+            {
+                name: me.MODE_BLUR
+            },
+            {
+                name: me.MODE_SHARPEN
+            },
+            {
+                name: me.MODE_CLONE_OBJECT
+            },
+            {
+                name: me.MODE_CONTRAST
+            },
+            {
+                name: me.MODE_LINE,
+                class: 'drawing.tool.shape.Line'
+            },
+            {
+                name: me.MODE_CIRCLE,
+                class: 'drawing.tool.shape.Circle'
+            },
+            {
+                name: me.MODE_ARROW_LINE,
+                class: "drawing.tool.shape.ArrowLine"
+            },
+            {
+                name: me.MODE_RECTANGLE,
+                class: "drawing.tool.shape.Rectangle"
+            },
+            {
+                name: me.MODE_ROTATE,
+                class: "drawing.tool.shape.Rotate"
+            }
+        ];
+
     };
 
     this.getShape = function (type, cb) {
-        var shape = shapeList[type];
-        if (typeof shape === 'string') {
-            fm.Include(shape, function(){
-                shapeList[type]  = new (fm.isExist(shape))(drawing);
-                cb(shapeList[type]);
+        var shape = getShapeByType(type);
+        if(!shape ){
+            throw "Shape " + type + " either does not exist";
+        }
+        if (typeof shape.class === 'string') {
+            fm.Include(shape.class, function(){
+                shape.class  = new (fm.isExist(shape.class))(drawing);
+                cb(shape.class);
             });
             return shape;
-        }else if(typeof shape === 'object'){
+        }else if(typeof shape.class === 'object'){
             cb(shape);
             return;
         }
-
-        throw "Shape " + type + " either does not exist or not added here";
+        throw new Error("This does not has class");
     };
 
 	this.getShapeList = function(){
 		return shapeList;
-	}
+	};
+
+    function getShapeByType (type) {
+        for(var index = 0; index < shapeList.length; index++){
+            if( type === shapeList[index].name){
+                return shapeList[index];
+            }
+        }
+    }
 };
