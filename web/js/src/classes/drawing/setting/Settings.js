@@ -6,6 +6,7 @@ drawing.setting.Settings = function (me) {
 	this.Settings = function () {
 		this.width = 700;
 		this.height = 400;
+		this.lineWidth = 1;
 		this.strokeStyle = "#ff0000";
 		this.fillColor = "#ff0000";
 		this.offset = $("#container").offset();

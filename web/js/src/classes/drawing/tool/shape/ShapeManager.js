@@ -99,10 +99,10 @@ drawing.tool.shape.ShapeManager = function (me) {
                 shape.class  = new (fm.isExist(shape.class))(drawing);
                 cb(shape.class);
             });
-            return shape;
+            return shape.class;
         }else if(typeof shape.class === 'object'){
-            cb(shape);
-            return;
+            cb(shape.class);
+            return shape.class;
         }
         throw new Error("This does not has class");
     };

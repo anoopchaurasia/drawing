@@ -33,14 +33,15 @@
                 ng-include="'/templates/dropdowns/layer.html'"
                 class="dropdown">
             </li>
-            <li 
+            <li
+                ng-show="drawing.currentTool.template" 
                 class="dropdown">
                 
                 <a 
                     href="#" 
                     class="dropdown-toggle" 
                     data-toggle="dropdown">
-                    Dropdown 
+                    Feature 
 
                     <span 
                         class="caret">

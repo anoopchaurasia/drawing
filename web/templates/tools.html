@@ -3,10 +3,9 @@
     <div
         ng-repeat="(index,data) in drawing.getToolList()" >
         <span
-            class="tool {{index}}"
-            ng-class="{selected: drawing.isSeletedTool(data)}"
-            ng-click="drawing.setTool(index)"
-            >
+            class="tool {{data.name}}"
+            ng-class="{selected: drawing.isSeletedTool(data.class)}"
+            ng-click="drawing.setTool(data.name)">
         </span>
     </div>
 </div>

@@ -3,6 +3,7 @@
  */
 fm.Package("drawing");
 fm.Include("drawing.controller.mainController");
+fm.Include("drawing.controller.toolActionController");
 fm.Import("drawing.UserActionList");
 fm.Import("drawing.layer.Layer");
 fm.Import("drawing.Contrast");

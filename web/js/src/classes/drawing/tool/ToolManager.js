@@ -27,26 +27,46 @@ drawing.tool.ToolManager = function (me) {
     var toolList, drawing;
 
     this.ToolManager = function (drw) {
-        toolList = {};
         drawing = drw;
-        toolList[me.MODE_COLOR_PICKER] = "drawing.tool.ColorPicker";
-        toolList[me.MODE_TEXT]  = 'drawing.tool.Text';
-        toolList[me.MODE_FILLER] = "drawing.tool.Filling";// new Filling(masterLayer, image, color);
-        toolList[me.MODE_ERASER] = "drawing.tool.Eraser"; // new Eraser(masterLayer);
-        toolList[me.MODE_PENCIL] = "drawing.tool.Pencil"; // new Pencil(masterLayer);
+        toolList = [
+            {
+                name: me.MODE_COLOR_PICKER,
+                class: 'drawing.tool.ColorPicker'
+            },
+            {
+                name: me.MODE_TEXT,
+                class: 'drawing.tool.Text'
+            },
+            {
+                name: me.MODE_FILLER,
+                class: 'drawing.tool.Filling'
+            },
+            {
+                name: me.MODE_ERASER,
+                class: 'drawing.tool.Eraser'
+            },
+            {
+                name: me.MODE_PENCIL,
+                class: 'drawing.tool.Pencil'
+            }
+        ];
+
     };
 
     this.getTool = function (type, cb) {
-        var toolClass = toolList[type];
-        if (typeof toolClass === 'string') {
-            fm.Include(toolClass, function(){
-                toolList[type] = new (fm.isExist(toolClass))(drawing);
-                cb(toolList[type]);
+        var tool = getToolByType(type);
+        if(!tool){
+            throw new Error("This tool does not exist");
+        }
+        if (typeof tool.class === 'string') {
+            fm.Include(tool.class, function(){
+                tool.class = new (fm.isExist(tool.class))(drawing);
+                cb(tool.class);
             });
-            return toolClass;
-        } else if(typeof toolClass === 'object'){
-            cb(toolClass);
-            return toolClass;
+            return tool.class;
+        } else if(typeof tool.class === 'object'){
+            cb(tool.class);
+            return tool.class;
         }
         throw "Tool " + type + " either does not exist or not added here";
     };
@@ -54,4 +74,12 @@ drawing.tool.ToolManager = function (me) {
     this.getToolList = function(){
         return toolList;
     };
+
+    function getToolByType (type) {
+        for(var index = 0; index < toolList.length; index++){
+            if( type === toolList[index].name){
+                return toolList[index];
+            }
+        }
+    }
 };
