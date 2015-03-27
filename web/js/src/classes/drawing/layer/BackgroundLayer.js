@@ -1,12 +1,6 @@
 fm.Package("drawing.layer");
-fm.Class("BackgroundLayer", "drawing.layer.Layer");
-
-/**
- *@class create canvas BackgroundLayer
- */
-drawing.layer.BackgroundLayer = function (base, me, Layer) {
+fm.Class("BackgroundLayer > drawing.layer.Layer", function ( me, Layer) {
     this.setMe=function(_me){me=_me;}
-    
     var bottomLayer;
     this.BackgroundLayer = function(drawing, canvasCont){
         this.closable = false;
@@ -46,4 +40,4 @@ drawing.layer.BackgroundLayer = function (base, me, Layer) {
             }
         }
     };
-};
+});

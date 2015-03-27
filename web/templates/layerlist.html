@@ -2,7 +2,7 @@
     ng-class="{selected: drawing.layerManager.isSelected(layer)}"
     ng-click="drawing.layerManager.selectLayer(layer)"
     class="layer"
-    ng-repeat="layer in drawing.layerManager.layerList">
+    ng-repeat="layer in drawing.layerManager.layerList track by $index">
     <span class="nowrap">{{layer.name}}</span>
     <span
     	ng-hide="layer.closable == false"

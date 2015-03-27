@@ -1,10 +1,5 @@
 fm.Package("drawing.layer");
-fm.Class("Layer");
-
-/**
- *@class create canvas layer
- */
-drawing.layer.Layer = function (me) {
+fm.Class("Layer", function (me) {
 
     'use strict';
 
@@ -27,6 +22,7 @@ drawing.layer.Layer = function (me) {
      */
     this.Layer = function (dwn, preaddedcanvas, cantainer, name) {
         drawing = dwn;
+        this.$$hashKey = null;
         if(preaddedcanvas){
             me.canvas = preaddedcanvas;
         }else{
@@ -174,4 +170,4 @@ drawing.layer.Layer = function (me) {
         me.clear();
         me.setData(data, width, height);
     }
-};
+});

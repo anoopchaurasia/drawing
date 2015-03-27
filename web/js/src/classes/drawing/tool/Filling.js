@@ -1,6 +1,5 @@
 fm.Package("drawing.tool");
-fm.Class("Filling", "drawing.tool.Tool");
-drawing.tool.Filling = function (base, me) {
+fm.Class("Filling > drawing.tool.Tool", function ( me) {
 
     'use strict';
 
@@ -11,7 +10,7 @@ drawing.tool.Filling = function (base, me) {
     var canvasWidth, sensitivity, outlineLayer, canvasHeight, outlineLayerData, clickedColorR, clickedColorG, clickedColorB, layerManager;
     var newColorR, newColorG, newColorB;
     this.Filling = function (drawing) {
-        base(drawing);
+       me.base(drawing);
         sensitivity = 0;
         layerManager = drawing.layerManager;
     };
@@ -137,4 +136,4 @@ drawing.tool.Filling = function (base, me) {
     this.setCursor = function () {
         layerManager.getSelectedLayer().canvas.css("cursor", "url(/images/cursor/fill.cur), pointer");
     };
-};
+});

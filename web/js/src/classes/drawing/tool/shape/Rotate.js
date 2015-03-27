@@ -1,10 +1,5 @@
 fm.Package("drawing.tool.shape");
-fm.Class("Rotate", "drawing.tool.shape.Shape");
-
-/**
- * @class
- */
-drawing.tool.shape.Rotate = function (base, me) {
+fm.Class("Rotate>drawing.tool.shape.Shape", function ( me) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -17,7 +12,7 @@ drawing.tool.shape.Rotate = function (base, me) {
      * @param {drawing.Layer} l
      */
     this.Rotate = function (drw) {
-        base(drw);
+       me.base(drw);
         this.showWidthSelector = false;
     };
 
@@ -56,4 +51,4 @@ drawing.tool.shape.Rotate = function (base, me) {
     this.toString = function () {
         return me.package.ShapeManager.MODE_ROTATE;
     };
-};
+});

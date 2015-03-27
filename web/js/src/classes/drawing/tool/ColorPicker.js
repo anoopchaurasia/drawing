@@ -1,8 +1,6 @@
 
 fm.Package("drawing.tool");
-fm.Class("ColorPicker", "drawing.tool.Tool");
-
-drawing.tool.ColorPicker = function (base, me) {
+fm.Class("ColorPicker > drawing.tool.Tool", function ( me) {
 	'use strict';	
 
 	this.setMe = function (_me) {
@@ -12,7 +10,7 @@ drawing.tool.ColorPicker = function (base, me) {
 	var layerManager;
 
 	this.ColorPicker = function (drw) {
-		base(drw);
+		me.base(drw);
 		layerManager = drw.layerManager;
 	};
 
@@ -45,4 +43,4 @@ drawing.tool.ColorPicker = function (base, me) {
     this.toString = function () {
         return me.package.ToolManager.MODE_COLOR_PICKER;
     };
-};
+});

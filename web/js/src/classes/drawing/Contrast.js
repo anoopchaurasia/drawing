@@ -1,7 +1,5 @@
 fm.Package("drawing");
-fm.Class("Contrast");
-
-drawing.Contrast = function (me) {
+fm.Class("Contrast", function (me) {
 
     this.setMe = function (_me) {
         me = _me;
@@ -43,4 +41,4 @@ drawing.Contrast = function (me) {
     this.toString = function () {
         return drawing.Drawing.MODE_CONTRAST;
     };
-};
+});

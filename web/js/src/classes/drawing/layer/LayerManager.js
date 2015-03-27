@@ -2,8 +2,7 @@ fm.Package("drawing.layer");
 fm.Import("jfm.dom.DomManager");
 fm.Import("drawing.layer.BackgroundLayer");
 fm.Import("drawing.layer.Layer");
-fm.Class("LayerManager");
-drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
+fm.Class("LayerManager", function(me, DomManager, BackgroundLayer, Layer){
 	"use strict";
 
 	this.setMe = function (_me) {
@@ -91,4 +90,4 @@ drawing.layer.LayerManager = function(me, DomManager, BackgroundLayer, Layer){
         layer = layer || me.selectedLayer;
         layer.resizeContent(width, height);
     }
-};
+});

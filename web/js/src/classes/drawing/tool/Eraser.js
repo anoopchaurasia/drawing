@@ -1,11 +1,5 @@
 fm.Package("drawing.tool");
-fm.Class("Eraser", "drawing.tool.Tool");
-/**
- * @class Eraser class
- * @param {drawing.tool.Tool} base
- * @param {Undefined} me
- */
-drawing.tool.Eraser = function (base, me) {
+fm.Class("Eraser > drawing.tool.Tool", function ( me) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -23,7 +17,7 @@ drawing.tool.Eraser = function (base, me) {
      * @param {CanvasRenderingContext2D } cx
      */
     this.Eraser = function (drawing) {
-        base(drawing);
+       me.base(drawing);
         layerManager = drawing.layerManager;
     };
 
@@ -60,4 +54,4 @@ drawing.tool.Eraser = function (base, me) {
     this.toString = function () {
         return me.package.ToolManager.MODE_ERASER;
     };
-};
+});

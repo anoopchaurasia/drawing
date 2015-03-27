@@ -1,10 +1,5 @@
 fm.Package("drawing.tool.shape");
-fm.Class("Rectangle", "drawing.tool.shape.Shape");
-
-/**
- * @class
- */
-drawing.tool.shape.Rectangle = function (base, me) {
+fm.Class("Rectangle>drawing.tool.shape.Shape", function ( me) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -16,7 +11,7 @@ drawing.tool.shape.Rectangle = function (base, me) {
      * @param {drawing.Drawing} drw
      */
     this.Rectangle = function (drw) {
-        base(drw);
+       me.base(drw);
     };
 
     /**
@@ -38,4 +33,4 @@ drawing.tool.shape.Rectangle = function (base, me) {
     this.toString = function () {
         return me.package.ShapeManager.MODE_RECTANGLE;
     };
-};
+});

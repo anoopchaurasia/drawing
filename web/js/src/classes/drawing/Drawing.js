@@ -11,13 +11,7 @@ fm.Import("drawing.tool.shape.ShapeManager");
 fm.Import("drawing.tool.ToolManager");
 fm.Import("drawing.setting.Settings");
 fm.Import("drawing.layer.LayerManager");
-fm.Class("Drawing");
-
-/**
- * Drawing
- * @class create Drawing
- */
-drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, ToolManager, Settings, LayerManager) {
+fm.Class("Drawing", function (me, UserActionList, Layer, Contrast, ShapeManager, ToolManager, Settings, LayerManager) {
 
     "use strict";
 
@@ -96,6 +90,7 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
 
         safeApply = sa;
         //events
+        this.currentTool = null;
         this.mousedown = mousedown;
         this.mousemove = mousemove;
         this.mouseleave = mouseleave;
@@ -395,4 +390,4 @@ drawing.Drawing = function (me, UserActionList, Layer, Contrast, ShapeManager, T
     this.isSeletedTool = function (tool) {
         return me.currentTool === tool;
     }
-};
+});

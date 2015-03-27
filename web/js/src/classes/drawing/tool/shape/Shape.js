@@ -8,7 +8,7 @@ fm.AbstractClass("Shape", "drawing.tool.Tool");
 /**
  * @class
  */
-drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
+drawing.tool.shape.Shape = function ( me, ShapeOverlay) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -32,7 +32,7 @@ drawing.tool.shape.Shape = function (base, me, ShapeOverlay) {
     this.Shape = function (drw) {
         layerManager = drw.layerManager;
         this.fillShape = false;
-        base(drw);
+       me.base(drw);
     };
 
 

@@ -3,8 +3,7 @@
  * @description Utility class
  */
 fm.Package("common");
-fm.Class("Utility");
-Utility = function (me) {
+fm.Class("Utility", function (me) {
     this.setMe = function (_me) {
         me = _me;
     };
@@ -195,4 +194,4 @@ Utility = function (me) {
         if (i == 0) return bytes + ' ' + sizes[i];
         return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
     };
-};
+});

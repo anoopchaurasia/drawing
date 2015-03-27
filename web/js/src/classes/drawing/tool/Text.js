@@ -1,12 +1,5 @@
 fm.Package("drawing.tool");
-fm.Class("Text", "drawing.tool.Tool");
-
-/**
- * @class pencil class
- * @param {drawing.tool.Tool} base
- * @param {Undefined} me
- */
-drawing.tool.Text = function (base, me) {
+fm.Class("Text > drawing.tool.Tool", function ( me) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -24,8 +17,9 @@ drawing.tool.Text = function (base, me) {
      */
 
     var isWriting, element;
-    this.Text = function (l) {
-        base(l);
+    this.Text = function (drawing) {
+        var l = drawing.layerManager;
+       me.base(drawing);
         isWriting = false;
         layerManager = l;
     };
@@ -99,4 +93,4 @@ drawing.tool.Text = function (base, me) {
     this.setCursor = function () {
         layerManager.selectedLayer.canvas.css("cursor", "url(/images/cursor/pencil.cur), pointer");
     };
-};
+});

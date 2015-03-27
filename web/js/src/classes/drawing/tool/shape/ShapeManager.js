@@ -1,6 +1,5 @@
 fm.Package("drawing.tool.shape");
-fm.Class("ShapeManager");
-drawing.tool.shape.ShapeManager = function (me) {
+fm.Class("ShapeManager",function (me) {
     this.setMe = function (_me) {
         me = _me;
     };
@@ -118,4 +117,4 @@ drawing.tool.shape.ShapeManager = function (me) {
             }
         }
     }
-};
+});

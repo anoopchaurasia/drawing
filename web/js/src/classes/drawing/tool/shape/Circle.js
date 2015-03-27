@@ -1,10 +1,5 @@
 fm.Package("drawing.tool.shape");
-fm.Class("Circle", "drawing.tool.shape.Shape");
-
-/**
- * @class
- */
-drawing.tool.shape.Circle = function (base, me) {
+fm.Class("Circle>drawing.tool.shape.Shape", function ( me) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -17,7 +12,7 @@ drawing.tool.shape.Circle = function (base, me) {
      * @param {drawing.Layer} l
      */
     this.Circle = function (drw) {
-        base(drw);
+       me.base(drw);
     };
 
     /**
@@ -53,4 +48,4 @@ drawing.tool.shape.Circle = function (base, me) {
     this.toString = function () {
         return me.package.ShapeManager.MODE_CIRCLE;
     };
-};
+});

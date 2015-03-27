@@ -1,10 +1,5 @@
 fm.Package("drawing");
-fm.Class("UserActionList");
-/**
- * create user action list
- * @class
- */
-drawing.UserActionList = function (me) {
+fm.Class("UserActionList",function (me) {
     this.setMe = function (_me) {
         me = _me;
     };
@@ -48,4 +43,4 @@ drawing.UserActionList = function (me) {
     this.getActions = function () {
         return me.actionList;
     };
-};
+});

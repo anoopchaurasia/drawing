@@ -2,12 +2,7 @@
  * @namespace drawing.tool.shape
  */
 fm.Package("drawing.tool.shape");
-fm.Class("ShapeOverlay");
-
-/**
- * @class
- */
-drawing.tool.shape.ShapeOverlay = function (me) {
+fm.Class("ShapeOverlay", function (me) {
 'use strict';
 
     this.setMe = function (_me) {
@@ -243,4 +238,4 @@ drawing.tool.shape.ShapeOverlay = function (me) {
         element && element.css('color', color);
     };
 
-};
+});

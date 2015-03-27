@@ -1,6 +1,5 @@
 fm.Package("drawing.tool");
-fm.Class("ToolManager");
-drawing.tool.ToolManager = function (me) {
+fm.Class("ToolManager", function (me) {
     'use strict';
     this.setMe = function (_me) {
         me = _me;
@@ -82,4 +81,4 @@ drawing.tool.ToolManager = function (me) {
             }
         }
     }
-};
+});

@@ -1,10 +1,5 @@
 fm.Package("drawing.tool.shape");
-fm.Class("ArrowLine", "drawing.tool.shape.Shape");
-
-/**
- * @class
- */
-drawing.tool.shape.ArrowLine = function (base, me) {
+fm.Class("ArrowLine>drawing.tool.shape.Shape", function ( me) {
     'use strict';
 
     this.setMe = function (_me) {
@@ -17,7 +12,7 @@ drawing.tool.shape.ArrowLine = function (base, me) {
      * @param {drawing.Layer} l
      */
     this.ArrowLine = function (ml, l) {
-        base(ml, l);
+       me.base(ml, l);
         this.showWidthSelector = false;
     };
 
@@ -52,4 +47,4 @@ drawing.tool.shape.ArrowLine = function (base, me) {
     this.toString = function () {
         return me.package.ShapeManager.MODE_ARROW_LINE;
     };
-};
+});
