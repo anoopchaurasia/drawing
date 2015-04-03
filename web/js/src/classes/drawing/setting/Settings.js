@@ -6,6 +6,7 @@ fm.Class("Settings", function (me) {
 		this.width = 700;
 		this.height = 400;
 		this.color = null;
+		this.selectedColor = null;
 		this.lineWidth = 1;
 		this.strokeStyle = "#ff0000";
 		this.fillColor = "#ff0000";

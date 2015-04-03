@@ -64,7 +64,6 @@ fm.Class("Text > drawing.tool.Tool", function ( me) {
         }).appendTo(layerManager.selectedLayer.canvas.parent());
         element.focus();
         element.keyup(function(){
-            debugger;
         });
         //element.draggable();
         me.base.start(x, y);
